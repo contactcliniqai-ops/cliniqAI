@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinIQ — Clinical Decision Support, Reimagined</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #060810;
+  --bg2:       #0c0f1e;
+  --bg3:       #111527;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #f0f2f8;
+  --text-sub:  #7a86a8;
+  --text-muted:#3d4460;
+  --indigo:    #6366f1;
+  --indigo-lt: #818cf8;
+  --teal:      #06b6d4;
+  --green:     #10b981;
+  --amber:     #f59e0b;
+  --red:       #ef4444;
+  --glow:      rgba(99,102,241,0.18);
+  --serif:     'DM Serif Display', Georgia, serif;
+  --sans:      'DM Sans', system-ui, sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: rgba(99,102,241,0.35); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--indigo); border-radius: 2px; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp   { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+@keyframes float    { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+@keyframes pulse    { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes shimmer  { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+@keyframes scanline { 0% { top: -10%; } 100% { top: 110%; } }
+@keyframes orb1     { 0%,100%{transform:translate(0,0) scale(1);} 33%{transform:translate(60px,-40px) scale(1.1);} 66%{transform:translate(-40px,30px) scale(0.9);} }
+@keyframes orb2     { 0%,100%{transform:translate(0,0) scale(1);} 33%{transform:translate(-50px,50px) scale(0.9);} 66%{transform:translate(40px,-30px) scale(1.1);} }
+@keyframes dash     { to { stroke-dashoffset: -20; } }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 5%;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s, backdrop-filter 0.3s;
+}
+nav.scrolled {
+  background: rgba(6,8,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.logo-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 14px; font-weight: 500; color: #fff;
+  box-shadow: 0 0 20px rgba(99,102,241,0.4);
+}
+.logo-name {
+  font-family: var(--serif); font-size: 20px; color: var(--text);
+  letter-spacing: 0.01em;
+}
+.nav-links {
+  display: flex; gap: 36px; list-style: none;
+}
+.nav-links a {
+  font-size: 14px; font-weight: 500; color: var(--text-sub);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  display: flex; align-items: center; gap: 12px;
+}
+.btn-nav {
+  padding: 9px 20px; border-radius: 8px; border: 1px solid var(--border2);
+  font-size: 14px; font-weight: 500; font-family: var(--sans);
+  color: var(--text-sub); background: transparent; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-nav:hover { color: var(--text); border-color: var(--indigo); }
+.btn-nav-primary {
+  padding: 9px 20px; border-radius: 8px; border: none;
+  background: var(--indigo); color: #fff;
+  font-size: 14px; font-weight: 600; font-family: var(--sans);
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 0 20px rgba(99,102,241,0.3);
+}
+.btn-nav-primary:hover { background: var(--indigo-lt); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 5% 80px;
+  position: relative; overflow: hidden;
+}
+
+/* Background orbs */
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+  top: 5%; left: 15%;
+  animation: orb1 18s ease-in-out infinite;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
+  bottom: 10%; right: 10%;
+  animation: orb2 22s ease-in-out infinite;
+}
+.orb-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
+  top: 40%; left: 60%;
+}
+
+/* Grid overlay */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 20px;
+  border: 1px solid rgba(99,102,241,0.3);
+  background: rgba(99,102,241,0.08);
+  font-size: 12px; font-weight: 600; font-family: var(--mono);
+  color: var(--indigo-lt); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease-out 0.2s both;
+}
+.dot-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--indigo-lt);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 7vw, 6rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  max-width: 900px;
+  margin: 0 auto 28px;
+  animation: fadeUp 0.8s ease-out 0.4s both;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--indigo-lt), var(--teal));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-sub);
+  max-width: 580px; line-height: 1.7;
+  margin: 0 auto 44px;
+  animation: fadeUp 0.8s ease-out 0.6s both;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.8s ease-out 0.8s both;
+}
+.btn-hero {
+  padding: 14px 32px; border-radius: 10px; border: none;
+  background: linear-gradient(135deg, var(--indigo), #8b5cf6);
+  color: #fff; font-size: 16px; font-weight: 600; font-family: var(--sans);
+  cursor: pointer; transition: all 0.25s;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.35), 0 0 0 0 rgba(99,102,241,0.4);
+  position: relative; overflow: hidden;
+}
+.btn-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+.btn-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(99,102,241,0.5), 0 0 0 4px rgba(99,102,241,0.15);
+}
+.btn-ghost {
+  padding: 14px 28px; border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: transparent; color: var(--text-sub);
+  font-size: 15px; font-weight: 500; font-family: var(--sans);
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); }
+
+.hero-trust {
+  margin-top: 56px;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.8s ease-out 1s both;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-muted); font-weight: 500;
+}
+.trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); }
+
+/* ── Mock UI preview ─────────────────────────────────────────────────────── */
+.hero-preview {
+  margin-top: 80px; width: 100%; max-width: 960px;
+  animation: fadeUp 0.9s ease-out 1.1s both;
+  position: relative;
+}
+.preview-glow {
+  position: absolute; inset: -40px; border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(99,102,241,0.2), transparent 70%);
+  z-index: 0; pointer-events: none;
+}
+.preview-frame {
+  position: relative; z-index: 1;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+}
+.preview-bar {
+  padding: 12px 16px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+.preview-dot.r { background: #ef4444; }
+.preview-dot.y { background: #f59e0b; }
+.preview-dot.g { background: #10b981; }
+.preview-url {
+  flex: 1; text-align: center; font-family: var(--mono); font-size: 12px;
+  color: var(--text-muted);
+}
+.preview-body {
+  padding: 20px;
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px;
+  min-height: 340px;
+}
+.preview-panel {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px; overflow: hidden;
+}
+.preview-label {
+  font-size: 10px; font-weight: 600; font-family: var(--mono);
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.preview-specialty-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px;
+}
+.preview-spec-btn {
+  padding: 7px 8px; border-radius: 6px; border: 1px solid var(--border);
+  font-size: 11px; color: var(--text-muted); background: transparent;
+  display: flex; align-items: center; gap: 5px;
+}
+.preview-spec-btn.active {
+  background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.4); color: var(--indigo-lt);
+}
+.preview-field {
+  margin-bottom: 8px;
+}
+.preview-field-label {
+  font-size: 9px; font-weight: 600; font-family: var(--mono);
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.preview-input {
+  width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 5px; padding: 7px 9px; font-size: 11px; color: var(--text-sub);
+  font-family: var(--sans);
+}
+.preview-btn-bar {
+  background: linear-gradient(135deg, var(--indigo), #8b5cf6);
+  border-radius: 6px; padding: 9px; text-align: center;
+  font-size: 11px; font-weight: 600; color: #fff; margin-top: 10px;
+}
+/* Right panel */
+.preview-result-summary {
+  background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;
+  font-size: 11px; color: var(--text-sub); line-height: 1.6;
+}
+.preview-block {
+  border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+}
+.preview-block.red   { background: rgba(127,29,29,0.15); border: 1px solid rgba(127,29,29,0.3); }
+.preview-block.cyan  { background: rgba(8,145,178,0.08); border: 1px solid rgba(8,145,178,0.2); }
+.preview-block.violet{ background: rgba(49,46,129,0.15); border: 1px solid rgba(49,46,129,0.3); }
+.preview-block-title {
+  font-size: 9px; font-weight: 700; font-family: var(--mono);
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;
+}
+.preview-block.red    .preview-block-title { color: #f87171; }
+.preview-block.cyan   .preview-block-title { color: #67e8f9; }
+.preview-block.violet .preview-block-title { color: #a5b4fc; }
+.preview-tag {
+  display: inline-flex; align-items: center;
+  font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 20px; margin: 2px;
+}
+.preview-tag.blue   { background: rgba(29,78,216,0.3); color: #93c5fd; border: 1px solid rgba(29,78,216,0.4); }
+.preview-tag.red    { background: rgba(127,29,29,0.3); color: #f87171; border: 1px solid rgba(127,29,29,0.4); }
+.preview-tag.violet { background: rgba(49,46,129,0.3); color: #a5b4fc; border: 1px solid rgba(49,46,129,0.4); }
+
+/* ── Section scaffolding ──────────────────────────────────────────────────── */
+section { padding: 100px 5%; }
+.container { max-width: 1100px; margin: 0 auto; }
+
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--indigo-lt); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.section-eyebrow::before {
+  content: ''; width: 24px; height: 1px; background: var(--indigo-lt);
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 400; line-height: 1.1;
+  letter-spacing: -0.02em; margin-bottom: 20px;
+}
+.section-sub {
+  font-size: 17px; color: var(--text-sub); line-height: 1.7;
+  max-width: 540px;
+}
+
+/* ── Stats Bar ───────────────────────────────────────────────────────────── */
+.stats-bar {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 5%;
+}
+.stats-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.stat-item {
+  padding: 40px 24px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--serif); font-size: 3.2rem;
+  background: linear-gradient(135deg, var(--text), var(--indigo-lt));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1; margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 13px; color: var(--text-muted); font-weight: 500;
+}
+
+/* ── Feature Cards ───────────────────────────────────────────────────────── */
+.features { background: var(--bg); }
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; margin-top: 64px;
+}
+.feature-card {
+  background: var(--bg);
+  padding: 36px 32px;
+  transition: background 0.3s;
+  position: relative; overflow: hidden;
+}
+.feature-card:hover { background: var(--bg2); }
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--indigo), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+}
+.icon-indigo { background: rgba(99,102,241,0.15); }
+.icon-teal   { background: rgba(6,182,212,0.15); }
+.icon-green  { background: rgba(16,185,129,0.15); }
+.icon-amber  { background: rgba(245,158,11,0.15); }
+.icon-red    { background: rgba(239,68,68,0.15); }
+.icon-violet { background: rgba(139,92,246,0.15); }
+.feature-title {
+  font-size: 17px; font-weight: 600; color: var(--text);
+  margin-bottom: 10px; line-height: 1.3;
+}
+.feature-desc {
+  font-size: 14px; color: var(--text-sub); line-height: 1.7;
+}
+
+/* ── How it works ────────────────────────────────────────────────────────── */
+.how { background: var(--bg2); }
+.steps {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  margin-top: 64px; position: relative;
+}
+.steps::before {
+  content: '';
+  position: absolute; top: 32px; left: 12.5%; right: 12.5%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--indigo), var(--teal), var(--green), transparent);
+  opacity: 0.4;
+}
+.step {
+  text-align: center; padding: 0 20px;
+}
+.step-num {
+  width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 18px; font-weight: 500;
+  position: relative; z-index: 1;
+}
+.step:nth-child(1) .step-num { background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: var(--indigo-lt); }
+.step:nth-child(2) .step-num { background: rgba(6,182,212,0.15);  border: 1px solid rgba(6,182,212,0.3);  color: var(--teal); }
+.step:nth-child(3) .step-num { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: var(--green); }
+.step:nth-child(4) .step-num { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: var(--amber); }
+.step-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+.step-desc  { font-size: 14px; color: var(--text-sub); line-height: 1.6; }
+
+/* ── Specialties grid ────────────────────────────────────────────────────── */
+.specialties { background: var(--bg); }
+.spec-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin-top: 52px;
+}
+.spec-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 20px;
+  transition: all 0.25s; cursor: default;
+  position: relative; overflow: hidden;
+}
+.spec-card:hover {
+  border-color: var(--indigo);
+  background: rgba(99,102,241,0.05);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+.spec-emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+.spec-name  { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.spec-desc  { font-size: 13px; color: var(--text-sub); line-height: 1.5; }
+
+/* ── Clinical workflow ───────────────────────────────────────────────────── */
+.workflow { background: var(--bg2); }
+.workflow-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: center; margin-top: 64px;
+}
+.workflow-list { list-style: none; }
+.workflow-item {
+  display: flex; gap: 16px; padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.workflow-item:last-child { border-bottom: none; }
+.workflow-num {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  background: rgba(99,102,241,0.15); color: var(--indigo-lt);
+  margin-top: 2px;
+}
+.workflow-item-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.workflow-item-desc  { font-size: 14px; color: var(--text-sub); line-height: 1.6; }
+
+/* Admission flow diagram */
+.flow-diagram {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 16px; padding: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.flow-header {
+  font-size: 12px; font-family: var(--mono); font-weight: 500; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px;
+}
+.flow-node {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 8px; margin-bottom: 8px;
+  border: 1px solid var(--border);
+}
+.flow-node-icon { font-size: 18px; flex-shrink: 0; }
+.flow-node-text { font-size: 13px; color: var(--text-sub); flex: 1; }
+.flow-node-text strong { color: var(--text); display: block; font-size: 13px; font-weight: 600; }
+.flow-node.active { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.3); }
+.flow-node.success { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.3); }
+.flow-arrow {
+  text-align: center; color: var(--text-muted); font-size: 12px; margin: 4px 0 4px 20px;
+}
+.flow-badge {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
+  background: rgba(16,185,129,0.15); color: var(--green);
+  border: 1px solid rgba(16,185,129,0.3); white-space: nowrap;
+}
+
+/* ── Data Augmentation section ─────────────────────────────────────────── */
+.data-aug { background: var(--bg); }
+.data-aug-inner {
+  background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(6,182,212,0.05) 100%);
+  border: 1px solid var(--border2);
+  border-radius: 24px; padding: 64px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+  align-items: center;
+}
+.data-aug-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
+  color: var(--green); padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 24px;
+}
+.data-aug-points { list-style: none; margin-top: 28px; }
+.data-aug-point {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.data-aug-point:last-child { border-bottom: none; }
+.data-aug-check {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+  background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.data-aug-point-text { font-size: 14px; color: var(--text-sub); line-height: 1.6; }
+.data-aug-point-text strong { color: var(--text); display: block; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+
+/* Data augmentation box */
+.data-box {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 16px; padding: 28px; position: relative; overflow: hidden;
+}
+.data-box::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 180px; height: 180px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
+}
+
+/* ── Testimonials ────────────────────────────────────────────────────────── */
+.testimonials { background: var(--bg2); }
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 52px;
+}
+.testimonial {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px;
+  transition: all 0.3s;
+}
+.testimonial:hover {
+  border-color: var(--border2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  transform: translateY(-2px);
+}
+.testimonial-quote {
+  font-size: 15px; color: var(--text-sub); line-height: 1.75;
+  margin-bottom: 20px; font-style: italic;
+}
+.testimonial-quote::before { content: '"'; color: var(--indigo-lt); font-size: 2em; line-height: 0.5; vertical-align: -0.4em; margin-right: 4px; font-family: var(--serif); }
+.testimonial-author {
+  display: flex; align-items: center; gap: 12px;
+}
+.author-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo), #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.author-name  { font-size: 14px; font-weight: 600; color: var(--text); }
+.author-role  { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+/* ── Tech stack ──────────────────────────────────────────────────────────── */
+.tech { background: var(--bg); padding: 60px 5%; }
+.tech-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+}
+.tech-label {
+  font-size: 12px; font-family: var(--mono); color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
+}
+.tech-divider { width: 1px; height: 28px; background: var(--border); }
+.tech-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.tech-pill {
+  padding: 6px 14px; border-radius: 20px;
+  border: 1px solid var(--border2);
+  font-size: 13px; font-weight: 500; color: var(--text-sub);
+  font-family: var(--mono);
+  transition: all 0.2s;
+}
+.tech-pill:hover { border-color: var(--indigo); color: var(--indigo-lt); }
+
+/* ── CTA ─────────────────────────────────────────────────────────────────── */
+.cta { background: var(--bg2); padding: 100px 5%; }
+.cta-inner {
+  max-width: 700px; margin: 0 auto; text-align: center;
+  position: relative;
+}
+.cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.cta-inner > * { position: relative; z-index: 1; }
+.cta h2 {
+  font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px;
+}
+.cta-sub { font-size: 17px; color: var(--text-sub); margin-bottom: 44px; line-height: 1.7; }
+.cta-actions {
+  display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+}
+.btn-cta-primary {
+  padding: 16px 40px; border-radius: 12px; border: none;
+  background: linear-gradient(135deg, var(--indigo), #8b5cf6);
+  color: #fff; font-size: 16px; font-weight: 700; font-family: var(--sans);
+  cursor: pointer; transition: all 0.25s;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.4);
+  position: relative; overflow: hidden;
+}
+.btn-cta-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+.btn-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(99,102,241,0.55); }
+.cta-note { font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 48px 5%;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+}
+.footer-logo { display: flex; align-items: center; gap: 10px; }
+.footer-logo-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--indigo), #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; color: #fff;
+}
+.footer-brand { font-family: var(--serif); font-size: 17px; color: var(--text); }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { font-size: 13px; color: var(--text-muted); transition: color 0.2s; }
+.footer-links a:hover { color: var(--text-sub); }
+.footer-note { font-size: 13px; color: var(--text-muted); }
+.footer-disclaimer {
+  max-width: 1100px; margin: 24px auto 0; padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--text-muted); line-height: 1.6;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav-links, .nav-cta .btn-nav { display: none; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .stat-item:nth-child(2) { border-right: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .steps::before { display: none; }
+  .spec-grid { grid-template-columns: repeat(2, 1fr); }
+  .workflow-split, .data-aug-inner { grid-template-columns: 1fr; gap: 40px; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .preview-body { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-hero, .btn-ghost { width: 100%; justify-content: center; }
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .spec-grid { grid-template-columns: 1fr 1fr; }
+  .data-aug-inner { padding: 28px 20px; }
+  .hero-trust { flex-direction: column; gap: 12px; }
+}
+
+/* ── Demo form ───────────────────────────────────────────────────────────── */
+.demo-form {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 16px; padding: 36px;
+  max-width: 540px; margin: 0 auto 28px;
+  text-align: left;
+}
+.demo-form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.demo-field {
+  margin-bottom: 16px;
+}
+.demo-field label {
+  display: block; font-size: 13px; font-weight: 600; color: var(--text-sub);
+  margin-bottom: 7px;
+}
+.demo-field input,
+.demo-field select,
+.demo-field textarea {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 14px; font-family: var(--sans);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+}
+.demo-field input::placeholder,
+.demo-field textarea::placeholder { color: var(--text-muted); }
+.demo-field input:focus,
+.demo-field select:focus,
+.demo-field textarea:focus {
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+}
+.demo-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%237a86a8' stroke-width='2'%3E%3Cpath d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+.demo-field select option { background: var(--bg2); color: var(--text); }
+.demo-field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.demo-form-actions {
+  display: flex; align-items: center; gap: 20px; margin-top: 8px;
+  flex-wrap: wrap;
+}
+.demo-form-actions .btn-cta-primary { width: auto; padding: 13px 28px; }
+.demo-contact-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; color: var(--text-sub);
+  text-decoration: none; transition: color 0.2s;
+}
+.demo-contact-link:hover { color: var(--indigo-lt); }
+.demo-success {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; border-radius: 8px;
+  background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
+  color: var(--green); font-size: 14px; font-weight: 500;
+  margin-top: 16px;
+}
+.demo-success.hidden { display: none; }
+@media (max-width: 600px) {
+  .demo-form { padding: 24px 20px; }
+  .demo-form-grid { grid-template-columns: 1fr; }
+  .demo-form-actions { flex-direction: column; align-items: stretch; }
+  .demo-form-actions .btn-cta-primary { width: 100%; justify-content: center; }
+}
+
+/* ── Data Augmentation diagram ───────────────────────────────────────────── */
+.aug-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+}
+.aug-icon { font-size: 28px; flex-shrink: 0; }
+.aug-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.aug-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-family: var(--mono); }
+
+.aug-flow { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+.aug-step {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 12px 0;
+}
+.aug-step.active {
+  background: rgba(16,185,129,0.04);
+  border-radius: 8px; padding: 12px;
+  margin: 0 -12px;
+}
+.aug-step-num {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; font-family: var(--mono);
+  border: 1px solid;
+}
+.aug-step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.aug-step-desc  { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+.aug-connector {
+  width: 1px; height: 16px; margin-left: 13px;
+  background: linear-gradient(to bottom, rgba(99,102,241,0.3), rgba(16,185,129,0.3));
+}
+
+.aug-similar { border-top: 1px solid var(--border); padding-top: 16px; }
+.aug-similar-label {
+  font-size: 10px; font-weight: 700; font-family: var(--mono);
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.aug-case-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 6px; margin-bottom: 4px;
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.aug-case-id    { font-family: var(--mono); font-size: 11px; color: var(--text-sub); flex-shrink: 0; }
+.aug-case-match {
+  font-size: 11px; font-weight: 700; color: var(--teal);
+  background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2);
+  padding: 1px 7px; border-radius: 10px; flex-shrink: 0;
+}
+.aug-case-outcome { font-size: 11px; color: var(--text-muted); flex: 1; }
+.admitted-dot::before  { content: '● '; color: var(--green); }
+.discharged-dot::before{ content: '● '; color: var(--teal); }
+
+
+.demo-error {
+  padding: 12px 16px; border-radius: 8px; margin-top: 12px;
+  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25);
+  color: #f87171; font-size: 13px; line-height: 1.5;
+}
+.demo-error.hidden { display: none; }
+
+/* ── Contact Modal ───────────────────────────────────────────────────────── */
+.contact-modal-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.contact-modal-overlay.open {
+  opacity: 1; pointer-events: all;
+}
+.contact-modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 420px; width: 100%;
+  position: relative;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.25s ease;
+}
+.contact-modal-overlay.open .contact-modal {
+  transform: translateY(0) scale(1);
+}
+.contact-modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  color: var(--text-sub); cursor: pointer; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.contact-modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+.contact-modal-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+  border: 1px solid rgba(99,102,241,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 20px;
+}
+.contact-modal h3 {
+  font-family: var(--serif); font-size: 1.6rem; font-weight: 400;
+  letter-spacing: -0.01em; margin-bottom: 8px; color: var(--text);
+}
+.contact-modal-sub {
+  font-size: 14px; color: var(--text-sub); line-height: 1.6; margin-bottom: 28px;
+}
+.contact-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; border-radius: 12px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  margin-bottom: 12px; transition: all 0.2s; text-decoration: none;
+}
+.contact-item:hover {
+  border-color: var(--indigo); background: rgba(99,102,241,0.07);
+}
+.contact-item-icon {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+}
+.contact-item-icon.email-icon { background: rgba(99,102,241,0.15); }
+.contact-item-icon.phone-icon { background: rgba(16,185,129,0.15); }
+.contact-item-label { font-size: 11px; font-weight: 600; font-family: var(--mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
+.contact-item-value { font-size: 15px; font-weight: 500; color: var(--text); }
+</style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("Mbo_qrWKfEKMSAk1U");</script>
+<!--
+  ═══════════════════════════════════════════════════════════
+  EMAILJS SETUP — 3 steps to make the form send real emails
+  ═══════════════════════════════════════════════════════════
+  1. Create a FREE account at https://www.emailjs.com
+     (Free tier: 200 emails/month)
+
+  2. In EmailJS dashboard:
+     a) Add a service (Gmail recommended) → copy your SERVICE ID
+     b) Create a new Email Template with these variables:
+          {{from_name}}     - sender's full name
+          {{from_email}}    - sender's email
+          {{organisation}}  - their organisation
+          {{role}}          - their role
+          {{message}}       - their message
+        Set "To Email" to: contactcliniqai@gmail.com
+        Copy your TEMPLATE ID
+
+     c) Go to Account → copy your PUBLIC KEY
+
+  3. Replace these 3 placeholders in this file:
+     - YOUR_EMAILJS_PUBLIC_KEY   (in the emailjs.init call above)
+     - YOUR_EMAILJS_SERVICE_ID   (in the handleDemoSubmit function)
+     - YOUR_EMAILJS_TEMPLATE_ID  (in the handleDemoSubmit function)
+  ═══════════════════════════════════════════════════════════
+-->
+</head>
+<body>
+
+<!-- ── NAV ────────────────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="logo-mark">Rx</div>
+    <span class="logo-name">ClinIQ</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#specialties">Specialties</a></li>
+    <li><a href="#data-augmentation">Data Augmentation</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-nav" onclick="openContactModal()">Contact Us</button>
+    <button class="btn-nav-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Book a Demo</button>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-eyebrow">
+    <span class="dot-pulse"></span>
+    Real Patient Data · Institution-Specific · Evidence-Based
+  </div>
+
+  <h1>
+    Clinical decisions,<br>
+    <em>backed by AI.</em>
+  </h1>
+
+  <p class="hero-sub">
+    ClinIQ brings evidence-based clinical decision support to your team — powered by AI augmented with your hospital's own inpatient records. Every recommendation is grounded in outcomes from your institution.
+  </p>
+
+  <div class="hero-actions">
+    <button class="btn-hero" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+      Book a Demo →
+    </button>
+    <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
+      See how it works
+    </button>
+  </div>
+
+  <div class="hero-trust">
+    <div class="trust-item">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Built for clinicians
+    </div>
+    <div class="trust-dot"></div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      Augmented with real inpatient data
+    </div>
+    <div class="trust-dot"></div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      GDPR compliant
+    </div>
+    <div class="trust-dot"></div>
+    <div class="trust-item">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      On-premise deployment
+    </div>
+  </div>
+
+  <!-- Mock UI Preview -->
+  <div class="hero-preview">
+    <div class="preview-glow"></div>
+    <div class="preview-frame">
+      <div class="preview-bar">
+        <span class="preview-dot r"></span>
+        <span class="preview-dot y"></span>
+        <span class="preview-dot g"></span>
+        <span class="preview-url">cliniq.health — ClinIQ · Clinical Decision Support</span>
+      </div>
+      <div class="preview-body">
+        <!-- Left: Input panel -->
+        <div class="preview-panel">
+          <div class="preview-label">Specialty</div>
+          <div class="preview-specialty-grid">
+            <div class="preview-spec-btn">⚕️ General</div>
+            <div class="preview-spec-btn active">🫀 Cardiology</div>
+            <div class="preview-spec-btn">🧠 Neurology</div>
+            <div class="preview-spec-btn">🫁 Respiratory</div>
+          </div>
+          <div class="preview-label">Patient Information</div>
+          <div class="preview-field">
+            <div class="preview-field-label">Presenting Complaint</div>
+            <div class="preview-input" style="color:#e2e8f0">Chest pain 2h, radiation to jaw, diaphoresis</div>
+          </div>
+          <div class="preview-field">
+            <div class="preview-field-label">Age / Sex / Vitals</div>
+            <div class="preview-input">58yr Male · BP 160/95 · HR 102 · Sats 96%</div>
+          </div>
+          <div class="preview-btn-bar">🫀 Generate Clinical Advice</div>
+        </div>
+        <!-- Right: Result panel -->
+        <div class="preview-panel">
+          <div class="preview-result-summary">
+            58-year-old male presenting with acute chest pain with radiation to jaw and diaphoresis — highly suspicious for acute coronary syndrome requiring urgent evaluation.
+          </div>
+          <div class="preview-block red">
+            <div class="preview-block-title">🚨 Red Flags</div>
+            <div style="font-size:10px;color:#fca5a5;line-height:1.6">▸ STEMI equivalent presentation — time-critical<br>▸ Haemodynamic compromise risk<br>▸ Jaw radiation with diaphoresis</div>
+          </div>
+          <div class="preview-block cyan">
+            <div class="preview-block-title">🔬 Investigations</div>
+            <div style="margin-bottom:5px">
+              <span class="preview-tag blue">12-lead ECG</span>
+              <span class="preview-tag blue">Troponin</span>
+              <span class="preview-tag blue">FBC</span>
+              <span class="preview-tag blue">CXR</span>
+            </div>
+          </div>
+          <div class="preview-block violet">
+            <div class="preview-block-title">🩺 Differentials</div>
+            <div style="font-size:10px;color:#c4b5fd;line-height:1.7">
+              <span class="preview-tag violet">STEMI — High</span>
+              <span class="preview-tag violet">NSTEMI — High</span>
+              <span class="preview-tag red">Aortic Dissection — Medium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ──────────────────────────────────────────────────────────────── -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-num">8</div>
+      <div class="stat-label">Medical Specialties</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.1s">
+      <div class="stat-num">27+</div>
+      <div class="stat-label">Doctor Specialties Supported</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.2s">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Patient Data Sent to Cloud</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.3s">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Local — Your Infrastructure</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ───────────────────────────────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Features</div>
+      <h2 class="section-title">Everything your clinical<br>team needs</h2>
+      <p class="section-sub">From AI-powered differential diagnoses to real-time doctor notifications — ClinIQ is a complete clinical workflow platform.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal" style="transition-delay:0.05s">
+        <div class="feature-icon icon-indigo">🤖</div>
+        <div class="feature-title">AI Clinical Advisor</div>
+        <div class="feature-desc">Submit patient data via structured form or free-text. Get back red flags, differential diagnoses, investigation plans, and evidence-based management — in seconds.</div>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.1s">
+        <div class="feature-icon icon-teal">🔬</div>
+        <div class="feature-title">Structured Investigations</div>
+        <div class="feature-desc">AI-generated investigation panels categorised by type (bloods, imaging, microbiology) with clinical rationale for each recommendation.</div>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.15s">
+        <div class="feature-icon icon-red">🚨</div>
+        <div class="feature-title">Red Flag Detection</div>
+        <div class="feature-desc">Automatic identification of time-critical presentations. Red flags surface immediately at the top of every assessment — before anything else.</div>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.2s">
+        <div class="feature-icon icon-green">🏥</div>
+        <div class="feature-title">Admission Workflow</div>
+        <div class="feature-desc">Seamless admission requests with urgency grading (Routine / Urgent / Emergency). Cases are automatically routed to the right specialty doctor queue.</div>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.25s">
+        <div class="feature-icon icon-violet">✏️</div>
+        <div class="feature-title">Doctor Review & Override</div>
+        <div class="feature-desc">Doctors review the full AI analysis, edit the suggested action plan inline, add clinical notes, then Admit, Reject, or Discharge — all in one modal.</div>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.3s">
+        <div class="feature-icon icon-amber">🔔</div>
+        <div class="feature-title">Real-Time Notifications</div>
+        <div class="feature-desc">Bidirectional notification system. Doctors are alerted to new referrals; clinicians are notified the moment a decision is made on their patient.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────────────────────────────── -->
+<section class="how" id="how">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-title">From bedside to decision<br>in four steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal" style="transition-delay:0.05s">
+        <div class="step-num">01</div>
+        <div class="step-title">Enter Patient Data</div>
+        <div class="step-desc">Use the structured clinical form or paste free-text notes. Select the relevant specialty for targeted AI advice.</div>
+      </div>
+      <div class="step reveal" style="transition-delay:0.15s">
+        <div class="step-num">02</div>
+        <div class="step-title">AI Analysis</div>
+        <div class="step-desc">The AI analyses the case against your hospital's inpatient history, generating red flags, differentials, investigations, and a contextualised evidence-based action plan.</div>
+      </div>
+      <div class="step reveal" style="transition-delay:0.25s">
+        <div class="step-num">03</div>
+        <div class="step-title">Admit Request</div>
+        <div class="step-desc">Attach patient details and submit an admission request. The relevant specialty doctors are instantly notified in their queue.</div>
+      </div>
+      <div class="step reveal" style="transition-delay:0.35s">
+        <div class="step-num">04</div>
+        <div class="step-title">Doctor Decision</div>
+        <div class="step-desc">The reviewing doctor edits the action plan, adds clinical notes, and makes a decision. The referring clinician is notified immediately.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPECIALTIES ─────────────────────────────────────────────────────────── -->
+<section class="specialties" id="specialties">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">Specialties</div>
+      <h2 class="section-title">Eight specialties,<br>one platform</h2>
+      <p class="section-sub">Each specialty has a tailored AI system prompt, ensuring clinical advice is contextualised to the right domain of medicine.</p>
+    </div>
+    <div class="spec-grid">
+      <div class="spec-card reveal" style="transition-delay:0.05s">
+        <span class="spec-emoji">⚕️</span>
+        <div class="spec-name">General Medicine</div>
+        <div class="spec-desc">Broad acute medical presentations, multi-system assessment</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.1s">
+        <span class="spec-emoji">🫀</span>
+        <div class="spec-name">Cardiology</div>
+        <div class="spec-desc">Chest pain, ACS, arrhythmias, heart failure presentations</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.15s">
+        <span class="spec-emoji">🧠</span>
+        <div class="spec-name">Neurology</div>
+        <div class="spec-desc">Stroke, seizures, headache, peripheral and central nervous system</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.2s">
+        <span class="spec-emoji">👶</span>
+        <div class="spec-name">Paediatrics</div>
+        <div class="spec-desc">Age-appropriate assessments for paediatric presentations</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.25s">
+        <span class="spec-emoji">🫁</span>
+        <div class="spec-name">Respiratory</div>
+        <div class="spec-desc">Dyspnoea, pneumonia, COPD, asthma, pulmonary embolism</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.3s">
+        <span class="spec-emoji">🔬</span>
+        <div class="spec-name">Gastroenterology</div>
+        <div class="spec-desc">GI bleeds, abdominal pain, liver disease, IBD flares</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.35s">
+        <span class="spec-emoji">🦴</span>
+        <div class="spec-name">Orthopaedics</div>
+        <div class="spec-desc">Fractures, MSK injuries, joint pathology, post-op concerns</div>
+      </div>
+      <div class="spec-card reveal" style="transition-delay:0.4s">
+        <span class="spec-emoji">🧩</span>
+        <div class="spec-name">Psychiatry</div>
+        <div class="spec-desc">Mental health crisis, risk assessment, psychosis, mood disorders</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORKFLOW ────────────────────────────────────────────────────────────── -->
+<section class="workflow" id="workflow">
+  <div class="container">
+    <div class="workflow-split">
+      <div class="reveal">
+        <div class="section-eyebrow">Admission Workflow</div>
+        <h2 class="section-title">A complete referral<br>system, built in</h2>
+        <ul class="workflow-list">
+          <li class="workflow-item">
+            <div class="workflow-num">1</div>
+            <div>
+              <div class="workflow-item-title">Automatic doctor matching</div>
+              <div class="workflow-item-desc">When a clinician submits an admission request, ClinIQ automatically identifies all registered doctors in that specialty and routes the case to their queue.</div>
+            </div>
+          </li>
+          <li class="workflow-item">
+            <div class="workflow-num">2</div>
+            <div>
+              <div class="workflow-item-title">Urgency-based prioritisation</div>
+              <div class="workflow-item-desc">Cases are graded Routine, Urgent, or Emergency. Emergency cases rise to the top of every doctor's queue and trigger immediate notification.</div>
+            </div>
+          </li>
+          <li class="workflow-item">
+            <div class="workflow-num">3</div>
+            <div>
+              <div class="workflow-item-title">Full case context preserved</div>
+              <div class="workflow-item-desc">The reviewing doctor sees everything: the original patient data, the complete AI analysis, and all clinician notes — in a single review modal.</div>
+            </div>
+          </li>
+          <li class="workflow-item">
+            <div class="workflow-num">4</div>
+            <div>
+              <div class="workflow-item-title">Closed-loop notifications</div>
+              <div class="workflow-item-desc">Decisions close the loop. The referring clinician receives an instant notification when their patient is admitted, rejected, or discharged.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="reveal" style="transition-delay:0.2s">
+        <div class="flow-diagram">
+          <div class="flow-header">Live case status</div>
+          <div class="flow-node">
+            <div class="flow-node-icon">🩺</div>
+            <div class="flow-node-text">
+              <strong>Clinician submits case</strong>
+              AI analysis attached · Urgency: Emergency
+            </div>
+            <span class="flow-badge">Sent</span>
+          </div>
+          <div class="flow-arrow">↓ Routed to Cardiology queue</div>
+          <div class="flow-node active">
+            <div class="flow-node-icon">👨‍⚕️</div>
+            <div class="flow-node-text">
+              <strong>Dr. Smith — Cardiology</strong>
+              Reviewing case · Action plan being edited
+            </div>
+            <span class="flow-badge" style="background:rgba(99,102,241,0.15);color:#818cf8;border-color:rgba(99,102,241,0.3)">Reviewing</span>
+          </div>
+          <div class="flow-arrow">↓ Decision made</div>
+          <div class="flow-node success">
+            <div class="flow-node-icon">✅</div>
+            <div class="flow-node-text">
+              <strong>Patient admitted to Cardiology</strong>
+              Ward 4B · Doctor notes attached
+            </div>
+            <span class="flow-badge">Admitted</span>
+          </div>
+          <div class="flow-arrow">↓ Clinician notified</div>
+          <div class="flow-node">
+            <div class="flow-node-icon">🔔</div>
+            <div class="flow-node-text">
+              <strong>Nurse A notified</strong>
+              "John Doe admitted by Dr. Smith — Cardiology"
+            </div>
+            <span class="flow-badge" style="background:rgba(6,182,212,0.15);color:#67e8f9;border-color:rgba(6,182,212,0.3)">Delivered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DATA AUGMENTATION ─────────────────────────────────────────────────── -->
+<section class="data-aug" id="data-augmentation">
+  <div class="container">
+    <div class="data-aug-inner reveal">
+      <div>
+        <div class="data-aug-badge" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.25);color:var(--teal)">📊 Real Patient Data</div>
+        <h2 class="section-title" style="font-size:clamp(1.8rem,3vw,2.6rem)">Clinical advice grounded<br>in <em style="font-style:italic">your</em> hospital's history</h2>
+        <p style="font-size:15px;color:var(--text-sub);line-height:1.7;margin-top:12px">
+          ClinIQ augments AI-generated advice with your hospital's own inpatient records — so every recommendation reflects the outcomes, protocols, and case patterns specific to your institution.
+        </p>
+        <ul class="data-aug-points">
+          <li class="data-aug-point">
+            <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)">✓</div>
+            <div class="data-aug-point-text">
+              <strong>Inpatient record integration</strong>
+              Historical admission data, discharge summaries, and clinical outcomes are ingested and indexed, forming the foundation of every AI recommendation.
+            </div>
+          </li>
+          <li class="data-aug-point">
+            <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)">✓</div>
+            <div class="data-aug-point-text">
+              <strong>Institution-specific context</strong>
+              Recommendations are weighted against what has actually worked at your hospital — not just generalised medical literature.
+            </div>
+          </li>
+          <li class="data-aug-point">
+            <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)">✓</div>
+            <div class="data-aug-point-text">
+              <strong>Continuous learning loop</strong>
+              As new cases are admitted and closed, the augmentation layer updates — keeping clinical advice aligned with your evolving patient population.
+            </div>
+          </li>
+          <li class="data-aug-point">
+            <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)">✓</div>
+            <div class="data-aug-point-text">
+              <strong>Similarity-matched retrieval</strong>
+              When a new patient is assessed, ClinIQ surfaces the most clinically similar historical cases — giving clinicians direct precedent from within their own walls.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div class="data-box">
+          <!-- Augmentation flow diagram -->
+          <div class="aug-header">
+            <span class="aug-icon">🗂️</span>
+            <div>
+              <div class="aug-title">How augmentation works</div>
+              <div class="aug-sub">Live example — Cardiology presentation</div>
+            </div>
+          </div>
+
+          <div class="aug-flow">
+            <div class="aug-step">
+              <div class="aug-step-num" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3);color:var(--teal)">1</div>
+              <div class="aug-step-body">
+                <div class="aug-step-title">New patient presented</div>
+                <div class="aug-step-desc">58M · Chest pain · Diaphoresis · BP 160/95</div>
+              </div>
+            </div>
+            <div class="aug-connector"></div>
+            <div class="aug-step">
+              <div class="aug-step-num" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.3);color:var(--indigo-lt)">2</div>
+              <div class="aug-step-body">
+                <div class="aug-step-title">Historical records searched</div>
+                <div class="aug-step-desc">847 similar inpatient cases matched across 5 years</div>
+              </div>
+            </div>
+            <div class="aug-connector"></div>
+            <div class="aug-step">
+              <div class="aug-step-num" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--amber)">3</div>
+              <div class="aug-step-body">
+                <div class="aug-step-title">Outcomes analysed</div>
+                <div class="aug-step-desc">78% STEMI confirmed · Avg time-to-cath 42 min at this trust</div>
+              </div>
+            </div>
+            <div class="aug-connector"></div>
+            <div class="aug-step active">
+              <div class="aug-step-num" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--green)">4</div>
+              <div class="aug-step-body">
+                <div class="aug-step-title">Augmented advice generated</div>
+                <div class="aug-step-desc">AI advice enriched with your trust's protocols &amp; precedent</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="aug-similar">
+            <div class="aug-similar-label">Top matched historical cases</div>
+            <div class="aug-case-row">
+              <span class="aug-case-id">INP-2023-4471</span>
+              <span class="aug-case-match">96% match</span>
+              <span class="aug-case-outcome admitted-dot">Admitted → STEMI pathway</span>
+            </div>
+            <div class="aug-case-row">
+              <span class="aug-case-id">INP-2022-8830</span>
+              <span class="aug-case-match">91% match</span>
+              <span class="aug-case-outcome admitted-dot">Admitted → Cath lab 38 min</span>
+            </div>
+            <div class="aug-case-row">
+              <span class="aug-case-id">INP-2024-1102</span>
+              <span class="aug-case-match">88% match</span>
+              <span class="aug-case-outcome discharged-dot">Discharged → ACS ruled out</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ────────────────────────────────────────────────────────── -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <div class="section-eyebrow">Testimonials</div>
+      <h2 class="section-title">Trusted by clinicians</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial reveal" style="transition-delay:0.05s">
+        <div class="testimonial-quote">The red flag detection alone has changed how we triage in A&E. It surfaces what matters immediately, without wading through paragraphs of text.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">SR</div>
+          <div>
+            <div class="author-name">Dr. Sarah Rahman</div>
+            <div class="author-role">Emergency Medicine Consultant</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal" style="transition-delay:0.15s">
+        <div class="testimonial-quote">I was sceptical about AI in clinical settings until I saw it run completely locally. No data leaving the network means I can actually recommend this to my team.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">JC</div>
+          <div>
+            <div class="author-name">James Chen</div>
+            <div class="author-role">Clinical Informatics Lead</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal" style="transition-delay:0.25s">
+        <div class="testimonial-quote">The admission workflow has cut our referral back-and-forth in half. Doctors get full context, and I get notified the second a decision is made.</div>
+        <div class="testimonial-author">
+          <div class="author-avatar">AM</div>
+          <div>
+            <div class="author-name">Amara Mensah</div>
+            <div class="author-role">Advanced Nurse Practitioner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── CTA ────────────────────────────────────────────────────────────────── -->
+<section class="cta" id="cta">
+  <div class="cta-inner reveal">
+    <div class="cta-glow"></div>
+    <div class="section-eyebrow" style="justify-content:center">Get in Touch</div>
+    <h2>See ClinIQ<br><em style="font-style:italic;background:linear-gradient(135deg,var(--indigo-lt),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">in action</em></h2>
+    <p class="cta-sub">Book a personalised demo for your team, or contact us to discuss deployment options for your organisation.</p>
+
+    <div class="demo-form">
+      <div class="demo-form-grid">
+        <div class="demo-field">
+          <label>First name</label>
+          <input type="text" id="demo-firstname" placeholder="Dr. Jane">
+        </div>
+        <div class="demo-field">
+          <label>Last name</label>
+          <input type="text" id="demo-lastname" placeholder="Smith">
+        </div>
+      </div>
+      <div class="demo-field">
+        <label>Work email</label>
+        <input type="email" id="demo-email" placeholder="jane.smith@hospital.nhs.uk">
+      </div>
+      <div class="demo-form-grid">
+        <div class="demo-field">
+          <label>Organisation</label>
+          <input type="text" id="demo-org" placeholder="NHS Trust / Hospital / Clinic">
+        </div>
+        <div class="demo-field">
+          <label>Role</label>
+          <select id="demo-role">
+            <option value="" disabled selected>Select your role</option>
+            <option>Doctor / Consultant</option>
+            <option>Clinical Director</option>
+            <option>Nurse Practitioner</option>
+            <option>IT / Clinical Informatics</option>
+            <option>Hospital Administrator</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="demo-field">
+        <label>Message <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
+        <textarea id="demo-message" placeholder="Tell us about your team size, specialties, or any specific questions..."></textarea>
+      </div>
+      <div class="demo-form-actions">
+        <button class="btn-cta-primary" onclick="handleDemoSubmit(this)">
+          Book a Demo →
+        </button>
+        <a href="#" class="demo-contact-link" onclick="event.preventDefault();openContactModal()">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Or email us directly
+        </a>
+      </div>
+      <div id="form-success" class="demo-success hidden">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Thanks! We'll be in touch within one business day.
+      </div>
+      <div id="form-error" class="demo-error hidden"></div>
+    </div>
+    <p class="cta-note">No commitment · For qualified clinical teams only · Responses within 1 business day</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-mark">Rx</div>
+      <span class="footer-brand">ClinIQ</span>
+    </div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#data-augmentation">Data Augmentation</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#cta">Book Demo</a>
+    </div>
+    <div class="footer-note">© 2025 ClinIQ · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7bfb2bbbbb897b4bbbeb9bea6f9bfb2b6bba3bf">[email&#160;protected]</a></div>
+  </div>
+  <div class="footer-disclaimer">
+    <strong style="color:var(--text-muted)">Medical Disclaimer:</strong> ClinIQ is a clinical decision support tool intended for use by qualified healthcare professionals only. All AI-generated outputs are for decision support purposes and do not replace clinical judgement. The treating clinician retains full responsibility for all clinical decisions. Not for direct patient use.
+  </div>
+</footer>
+
+<!-- ── CONTACT MODAL ──────────────────────────────────────────────────────── -->
+<div class="contact-modal-overlay" id="contactModal" onclick="if(event.target===this)closeContactModal()">
+  <div class="contact-modal">
+    <button class="contact-modal-close" onclick="closeContactModal()">✕</button>
+    <div class="contact-modal-icon">💬</div>
+    <h3>Get in Touch</h3>
+    <p class="contact-modal-sub">Reach out to us directly — we typically respond within one business day.</p>
+    <a class="contact-item" href="mailto:contactcliniqai@gmail.com">
+      <div class="contact-item-icon email-icon">✉️</div>
+      <div>
+        <div class="contact-item-label">Email</div>
+        <div class="contact-item-value">contactcliniqai@gmail.com</div>
+      </div>
+    </a>
+    <a class="contact-item" href="tel:+14435592211">
+      <div class="contact-item-icon phone-icon">📞</div>
+      <div>
+        <div class="contact-item-label">Phone</div>
+        <div class="contact-item-value">(443) 559-2211</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<script>
+// ── Sticky nav ───────────────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── Contact Modal ─────────────────────────────────────────────────────────────
+function openContactModal() {
+  document.getElementById('contactModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeContactModal() {
+  document.getElementById('contactModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContactModal(); });
+
+
+const revealEls = document.querySelectorAll('.reveal');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+revealEls.forEach(el => observer.observe(el));
+
+// Fallback: make all reveal elements visible after 1.5s
+// in case IntersectionObserver doesn't fire (local file / iframe / hidden tab)
+setTimeout(() => {
+  revealEls.forEach(el => el.classList.add('visible'));
+}, 1500);
+
+// ── Demo form submission via EmailJS ─────────────────────────────────────────
+function handleDemoSubmit(btn) {
+  const form      = btn.closest('.demo-form');
+  const inputs    = form.querySelectorAll('input, select, textarea');
+  const firstName = document.getElementById('demo-firstname').value.trim();
+  const lastName  = document.getElementById('demo-lastname').value.trim();
+  const email     = document.getElementById('demo-email').value.trim();
+  const org       = document.getElementById('demo-org').value.trim();
+  const role      = document.getElementById('demo-role').value;
+  const message   = document.getElementById('demo-message').value.trim();
+
+  // Validation
+  const emailField = document.getElementById('demo-email');
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    emailField.style.borderColor = 'var(--red)';
+    emailField.focus();
+    return;
+  }
+  emailField.style.borderColor = '';
+
+  btn.disabled    = true;
+  btn.textContent = 'Sending...';
+
+  const templateParams = {
+    to_email:    'contactcliniqai@gmail.com',
+    from_name:   (firstName + ' ' + lastName).trim() || 'Not provided',
+    from_email:  email,
+    organisation: org  || 'Not provided',
+    role:         role || 'Not provided',
+    message:      message || 'No message provided',
+    reply_to:     email,
+  };
+
+  emailjs.send('service_k49lcfj', 'template_inxa4us', templateParams)
+    .then(() => {
+      form.querySelector('#form-success').classList.remove('hidden');
+      form.querySelector('.demo-form-actions').style.display = 'none';
+      inputs.forEach(i => i.disabled = true);
+    })
+    .catch((err) => {
+      console.error('EmailJS error:', err);
+      btn.disabled    = false;
+      btn.textContent = 'Book a Demo →';
+      const errDiv = form.querySelector('#form-error');
+      if (errDiv) { errDiv.textContent = 'Failed to send. Please email us directly at contactcliniqai@gmail.com'; errDiv.classList.remove('hidden'); }
+    });
+}
+
+// ── Counter animation ─────────────────────────────────────────────────────────
+function animateCounter(el, target, suffix = '', duration = 1600) {
+  const isZero = target === 0;
+  if (isZero) return;
+  let start = null;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(eased * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = [
+        { el: document.querySelectorAll('.stat-num')[0], val: 8,   suffix: '' },
+        { el: document.querySelectorAll('.stat-num')[1], val: 27,  suffix: '+' },
+        { el: document.querySelectorAll('.stat-num')[2], val: 0,   suffix: '' },
+        { el: document.querySelectorAll('.stat-num')[3], val: 100, suffix: '%' },
+      ];
+      nums.forEach(({ el, val, suffix }, i) => {
+        setTimeout(() => animateCounter(el, val, suffix), i * 120);
+      });
+      statsObserver.disconnect();
+    }
+   });
+}, { threshold: 0.1 });
+
+const statsBar = document.querySelector('.stats-bar');
+if (statsBar) statsObserver.observe(statsBar);
+
+</script>
+</body>
+</html>
