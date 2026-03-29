@@ -957,7 +957,7 @@ footer {
      b) Create a new Email Template with these variables:
           {{from_name}}     - sender's full name
           {{from_email}}    - sender's email
-          {{organisation}}  - their organisation
+          {{organization}}  - their organization
           {{role}}          - their role
           {{message}}       - their message
         Set "To Email" to: contactcliniqai@gmail.com
@@ -1498,7 +1498,7 @@ footer {
     <div class="cta-glow"></div>
     <div class="section-eyebrow" style="justify-content:center">Get in Touch</div>
     <h2>See ClinIQ AI<br><em style="font-style:italic;background:linear-gradient(135deg,var(--indigo-lt),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">in action</em></h2>
-    <p class="cta-sub">Book a personalised demo for your team, or contact us to discuss deployment options for your organisation.</p>
+    <p class="cta-sub">Book a personalised demo for your team, or contact us to discuss deployment options for your organization.</p>
 
     <div class="demo-form">
       <div class="demo-form-grid">
@@ -1517,7 +1517,7 @@ footer {
       </div>
       <div class="demo-form-grid">
         <div class="demo-field">
-          <label>Organisation</label>
+          <label>organization</label>
           <input type="text" id="demo-org" placeholder="NHS Trust / Hospital / Clinic">
         </div>
         <div class="demo-field">
@@ -1665,7 +1665,7 @@ function handleDemoSubmit(btn) {
     to_email:    'contactcliniqai@gmail.com',
     from_name:   (firstName + ' ' + lastName).trim() || 'Not provided',
     from_email:  email,
-    organisation: org  || 'Not provided',
+    organization: org  || 'Not provided',
     role:         role || 'Not provided',
     message:      message || 'No message provided',
     reply_to:     email,
