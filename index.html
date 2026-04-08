@@ -960,7 +960,7 @@ footer {
           {{organization}}  - their organization
           {{role}}          - their role
           {{message}}       - their message
-        Set "To Email" to: contactcliniqai@gmail.com
+        Set "To Email" to: contact@cliniqai.health
         Copy your TEMPLATE ID
 
      c) Go to Account → copy your PUBLIC KEY
@@ -990,10 +990,10 @@ footer {
       <circle cx="116" cy="116" r="56" fill="none" stroke="#7C3AED" stroke-width="0.5" opacity="0.18"/>
       <rect x="108" y="82" width="16" height="68" rx="4" fill="#ffffff"/>
       <rect x="82" y="108" width="68" height="16" rx="4" fill="#ffffff"/>
-      <circle cx="155" cy="77" r="10" fill="#7C3AED"/>
+      <circle cx="155" cy="77" r="10" fill="#818cf8"/>
       <circle cx="155" cy="77" r="6" fill="#0D0717" opacity="0.5"/>
       <circle cx="155" cy="77" r="3" fill="#C4B5FD"/>
-      <text x="214" y="100" fill="#7C3AED" font-family="'DM Serif Display', Georgia, serif" font-size="22" font-style="italic">Rx</text>
+      <text x="214" y="100" fill="#818cf8" font-family="'DM Serif Display', Georgia, serif" font-size="22" font-style="italic">Rx</text>
       <text x="214" y="158" fill="#ffffff" font-family="'DM Serif Display', Georgia, serif" font-size="58" font-style="italic">ClinIQ AI</text>
     </svg>
   </div>
@@ -1590,10 +1590,10 @@ footer {
         <circle cx="116" cy="116" r="56" fill="none" stroke="#7C3AED" stroke-width="0.5" opacity="0.18"/>
         <rect x="108" y="82" width="16" height="68" rx="4" fill="#ffffff"/>
         <rect x="82" y="108" width="68" height="16" rx="4" fill="#ffffff"/>
-        <circle cx="155" cy="77" r="10" fill="#7C3AED"/>
+        <circle cx="155" cy="77" r="10" fill="#818cf8"/>
         <circle cx="155" cy="77" r="6" fill="#0D0717" opacity="0.5"/>
         <circle cx="155" cy="77" r="3" fill="#C4B5FD"/>
-        <text x="214" y="100" fill="#7C3AED" font-family="'DM Serif Display', Georgia, serif" font-size="22" font-style="italic">Rx</text>
+        <text x="214" y="100" fill="#818cf8" font-family="'DM Serif Display', Georgia, serif" font-size="22" font-style="italic">Rx</text>
         <text x="214" y="158" fill="#ffffff" font-family="'DM Serif Display', Georgia, serif" font-size="58" font-style="italic">ClinIQ AI</text>
       </svg>
     </div>
@@ -1617,11 +1617,11 @@ footer {
     <div class="contact-modal-icon">💬</div>
     <h3>Get in Touch</h3>
     <p class="contact-modal-sub">Reach out to us directly — we typically respond within one business day.</p>
-    <a class="contact-item" href="mailto:contactcliniqai@gmail.com">
+    <a class="contact-item" href="mailto:contact@cliniqai.health">
       <div class="contact-item-icon email-icon">✉️</div>
       <div>
         <div class="contact-item-label">Email</div>
-        <div class="contact-item-value">contactcliniqai@gmail.com</div>
+        <div class="contact-item-value">contact@cliniqai.health</div>
       </div>
     </a>
     <a class="contact-item" href="tel:+14435592211">
@@ -1696,7 +1696,7 @@ function handleDemoSubmit(btn) {
   btn.textContent = 'Sending...';
 
   const templateParams = {
-    to_email:    'contactcliniqai@gmail.com',
+    to_email:    'contact@cliniqai.health',
     from_name:   (firstName + ' ' + lastName).trim() || 'Not provided',
     from_email:  email,
     organization: org  || 'Not provided',
@@ -1716,7 +1716,7 @@ function handleDemoSubmit(btn) {
       btn.disabled    = false;
       btn.textContent = 'Book a Demo →';
       const errDiv = form.querySelector('#form-error');
-      if (errDiv) { errDiv.textContent = 'Failed to send. Please email us directly at contactcliniqai@gmail.com'; errDiv.classList.remove('hidden'); }
+      if (errDiv) { errDiv.textContent = 'Failed to send. Please email us directly at contact@cliniqai.health'; errDiv.classList.remove('hidden'); }
     });
 }
 
