@@ -1173,46 +1173,6 @@ footer {
 @media (max-width: 720px) { .demo-section { padding: 64px 0; } .demo-frame { border-radius: 12px; } }
 
 
-/* ── Demo cover / play control ──────────────────────────────────────────── */
-.demo-frame { position: relative; }
-.demo-cover {
-  position: absolute; inset: 0; z-index: 3; border: 0; padding: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; cursor: pointer;
-  transition: opacity .45s ease, visibility .45s ease;
-}
-.demo-cover[hidden] { opacity: 0; visibility: hidden; pointer-events: none; display: flex; }
-.demo-play {
-  position: relative; margin-top: 20%;
-  width: 96px; height: 96px; border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  display: grid; place-items: center;
-  box-shadow: 0 14px 44px rgba(99,102,241,.45);
-  transition: transform .3s cubic-bezier(.2,.7,.3,1);
-}
-.demo-play svg { width: 34px; height: 34px; fill: #fff; margin-left: 5px; }
-.demo-play::before, .demo-play::after {
-  content: ''; position: absolute; inset: 0; border-radius: 50%;
-  border: 2px solid rgba(129,140,248,.55);
-  animation: demoPulse 2.8s cubic-bezier(.2,.6,.3,1) infinite;
-}
-.demo-play::after { animation-delay: 1.4s; }
-@keyframes demoPulse {
-  0%   { transform: scale(1);   opacity: .75; }
-  100% { transform: scale(2.1); opacity: 0; }
-}
-.demo-cover:hover .demo-play, .demo-cover:focus-visible .demo-play { transform: scale(1.09); }
-.demo-cover:focus-visible { outline: 2px solid var(--indigo-lt); outline-offset: 4px; }
-.demo-play-label {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  bottom: 13%; font-family: var(--mono); font-size: 12px;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--text-sub);
-}
-@media (prefers-reduced-motion: reduce) {
-  .demo-play::before, .demo-play::after { animation: none; opacity: .4; }
-  .demo-cover, .demo-play { transition: none; }
-}
-@media (max-width: 720px) { .demo-play { width: 68px; height: 68px; } .demo-play svg { width: 24px; height: 24px; } }
 
 </style>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -1464,7 +1424,6 @@ footer {
   global.hydrateIcons = hydrateIcons;
 })(window);
 </script>
-<noscript><style>.demo-cover{display:none!important}</style></noscript>
 </head>
 <body>
 
@@ -2086,7 +2045,7 @@ footer {
     </div>
 
     <div class="demo-frame reveal">
-      <video preload="none" playsinline
+      <video controls preload="none" playsinline
              poster="assets/cliniq-demo-poster.jpg"
              width="1920" height="1080">
         <source src="assets/cliniq-demo-720p.mp4" type="video/mp4" media="(max-width: 1100px)">
@@ -2095,12 +2054,6 @@ footer {
         Your browser does not support embedded video.
         <a href="assets/cliniq-demo.mp4">Download the demo</a> instead.
       </video>
-      <button class="demo-cover" id="demo-cover" type="button" aria-label="Play the ClinIQ AI product demo">
-        <span class="demo-play" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </span>
-        <span class="demo-play-label">Watch the demo &middot; 5:46</span>
-      </button>
     </div>
 
     <div class="demo-meta reveal">
@@ -2390,19 +2343,5 @@ if (statsBar) statsObserver.observe(statsBar);
 
 </script>
 
-<script>
-(function () {
-  var cover = document.getElementById('demo-cover');
-  if (!cover) return;
-  var video = cover.parentNode.querySelector('video');
-  cover.addEventListener('click', function () {
-    cover.hidden = true;
-    video.setAttribute('controls', '');
-    var p = video.play();
-    if (p && p.catch) p.catch(function () { cover.hidden = false; });
-  });
-  video.addEventListener('ended', function () { cover.hidden = false; });
-})();
-</script>
 </body>
 </html>
