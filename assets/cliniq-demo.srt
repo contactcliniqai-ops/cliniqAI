@@ -1,219 +1,219 @@
 1
-00:00:00,600 --> 00:00:11,630
+00:00:00,601 --> 00:00:11,642
 A 67-year-old with new breathlessness. A child with fever and
 petechiae. Every shift brings cases that are genuinely
 uncertain.
 
 2
-00:00:11,830 --> 00:00:19,836
+00:00:11,842 --> 00:00:19,856
 The knowledge to help is already there — buried in thousands
 of past encounters, and unreachable at the bedside.
 
 3
-00:00:20,036 --> 00:00:24,106
+00:00:20,056 --> 00:00:24,130
 ClinIQ AI was built to close that gap.
 
 4
-00:00:25,460 --> 00:00:30,274
+00:00:25,485 --> 00:00:30,304
 Nowhere is that gap sharper than in an emergency department.
 
 5
-00:00:30,474 --> 00:00:37,424
+00:00:30,504 --> 00:00:37,461
 One clinician, dozens of patients, and a specialist who will
 not be free for hours.
 
 6
-00:00:37,624 --> 00:00:45,558
+00:00:37,662 --> 00:00:45,604
 ClinIQ AI makes the time before specialist input clinically
 productive instead of clinically passive.
 
 7
-00:00:46,910 --> 00:00:52,948
+00:00:46,957 --> 00:00:53,001
 When a case is submitted, ClinIQ AI does not simply forward it
 to a language model.
 
 8
-00:00:53,148 --> 00:01:01,490
+00:00:53,201 --> 00:01:01,551
 It embeds the case, then performs a similarity search over
 your existing encounters, scoped to the specialty.
 
 9
-00:01:01,690 --> 00:01:11,472
+00:01:01,752 --> 00:01:11,543
 Those real cases become grounding context. Guideline-based
 reasoning, weighed against what this hospital has actually
 seen.
 
 10
-00:01:11,672 --> 00:01:18,742
+00:01:11,744 --> 00:01:18,821
 No vector store configured yet? It degrades gracefully and
 still works from day one.
 
 11
-00:01:20,090 --> 00:01:29,104
+00:01:20,170 --> 00:01:29,193
 Start with the patient. Type an MRN and ClinIQ AI pulls the
 record straight from the EHR.
 
 12
-00:01:29,304 --> 00:01:38,630
+00:01:29,393 --> 00:01:38,729
 Demographics, medications, problem list and prior history
 arrive pre-filled — resolved only within your own
 organisation.
 
 13
-00:01:38,830 --> 00:01:45,468
+00:01:38,929 --> 00:01:45,573
 Choose one of eight specialties, or paste a referral letter as
 free text. Then ask.
 
 14
-00:01:46,820 --> 00:01:54,178
+00:01:46,927 --> 00:01:54,292
 The response is never loose prose. It is a structured record,
 and the schema is enforced.
 
 15
-00:01:54,378 --> 00:02:03,656
+00:01:54,492 --> 00:02:03,780
 A summary. Red flags, or an explicit empty list.
 Investigations grouped with the rationale for each one.
 
 16
-00:02:03,856 --> 00:02:13,230
+00:02:03,980 --> 00:02:13,363
 A prioritised action plan — immediate, short-term, follow-up —
 and safety netting that says exactly when to escalate.
 
 17
-00:02:13,430 --> 00:02:19,084
+00:02:13,563 --> 00:02:19,223
 And a badge: informed by four similar cases from this
 institution.
 
 18
-00:02:19,284 --> 00:02:24,602
+00:02:19,423 --> 00:02:24,747
 That number tells the clinician how much of this assessment
 came from here.
 
 19
-00:02:25,950 --> 00:02:33,212
+00:02:26,096 --> 00:02:33,365
 Every differential carries a likelihood, the features
 supporting it — and the features arguing against it.
 
 20
-00:02:33,412 --> 00:02:42,330
+00:02:33,565 --> 00:02:42,492
 With references to real published guidance: NICE, the ESC, the
 ACC and AHA.
 
 21
-00:02:42,530 --> 00:02:46,288
+00:02:42,693 --> 00:02:46,454
 It is built to be challenged, not just read.
 
 22
-00:02:47,640 --> 00:02:55,646
+00:02:47,808 --> 00:02:55,822
 ClinIQ AI does not admit patients. Admission raises a request,
 and a doctor decides.
 
 23
-00:02:55,846 --> 00:03:03,420
+00:02:56,022 --> 00:03:03,603
 The named doctor is notified, the case enters the pool, and
 its status stays visible to the whole team.
 
 24
-00:03:04,770 --> 00:03:10,088
+00:03:04,955 --> 00:03:10,278
 A reviewing doctor accepts the case and talks to the clinician
 who raised it.
 
 25
-00:03:10,288 --> 00:03:18,054
+00:03:10,478 --> 00:03:18,252
 Here the registrar asks about prior imaging — and learns the
 echo eighteen months ago was entirely normal.
 
 26
-00:03:18,254 --> 00:03:24,292
+00:03:18,452 --> 00:03:24,496
 Re-analysis feeds the original case and the full conversation
 back through the model.
 
 27
-00:03:24,492 --> 00:03:34,802
+00:03:24,696 --> 00:03:35,017
 Aortic stenosis drops. Diastolic function rises. The earlier
 analysis is kept in history — nothing is overwritten.
 
 28
-00:03:36,150 --> 00:03:41,252
+00:03:36,366 --> 00:03:41,473
 When the doctor commits to a diagnosis, the assessment narrows
 onto it.
 
 29
-00:03:41,452 --> 00:03:48,426
+00:03:41,673 --> 00:03:48,654
 No competing differentials — just confirming, staging and
 managing the condition in front of them.
 
 30
-00:03:48,626 --> 00:03:54,352
+00:03:48,855 --> 00:03:54,586
 And the finished record is written back to the EHR as a
 clinical note.
 
 31
-00:03:55,700 --> 00:03:59,698
+00:03:55,936 --> 00:03:59,938
 Some patients need a facility this one is not.
 
 32
-00:03:59,898 --> 00:04:11,384
+00:04:00,138 --> 00:04:11,635
 Transfer runs in four steps — receiving facility filtered by
 capability, clinical details, transport level, and the EMTALA
 checklist.
 
 33
-00:04:11,584 --> 00:04:19,686
+00:04:11,836 --> 00:04:19,946
 ClinIQ AI generates the SBAR handoff and the full
 documentation pack automatically.
 
 34
-00:04:19,886 --> 00:04:24,340
+00:04:20,146 --> 00:04:24,604
 The paperwork stops being the thing that holds the ambulance.
 
 35
-00:04:25,690 --> 00:04:31,248
+00:04:25,956 --> 00:04:31,519
 For clinical leads, the dashboard shows what no single shift
 can see.
 
 36
-00:04:31,448 --> 00:04:41,182
+00:04:31,719 --> 00:04:41,463
 Admissions against discharges, average length of stay, bed
 occupancy, and the conditions actually arriving at your door.
 
 37
-00:04:41,382 --> 00:04:44,660
+00:04:41,663 --> 00:04:44,945
 Daily, weekly or monthly.
 
 38
-00:04:46,010 --> 00:04:55,408
+00:04:46,296 --> 00:04:55,703
 It is multi-tenant from the ground up. Organisations, sub-
 organisations, and lookups that never cross an org boundary.
 
 39
-00:04:55,608 --> 00:05:02,534
+00:04:55,904 --> 00:05:02,837
 Each hospital tunes its own model, its own retrieval, its own
 sign-in policy.
 
 40
-00:05:02,734 --> 00:05:12,996
+00:05:03,037 --> 00:05:13,309
 Partner systems integrate over OAuth2, and everything runs in
 a private subnet with encryption at rest and TLS in front.
 
 41
-00:05:14,350 --> 00:05:23,172
+00:05:14,664 --> 00:05:23,495
 ClinIQ AI is decision support. The treating clinician’s
 judgment takes precedence at all times.
 
 42
-00:05:23,372 --> 00:05:29,650
+00:05:23,695 --> 00:05:29,980
 Clinical AI does not have to be a black box shipped from
 someone else’s data centre.
 
 43
-00:05:29,850 --> 00:05:33,464
+00:05:30,180 --> 00:05:33,797
 It can be something your institution owns.
 
 44
-00:05:34,810 --> 00:05:39,336
+00:05:35,145 --> 00:05:39,675
 Thank you for watching this quick demo of ClinIQ AI.
 
 45
-00:05:39,536 --> 00:05:45,142
+00:05:39,876 --> 00:05:45,487
 To book a personalised demo, go to cliniqai.health.
