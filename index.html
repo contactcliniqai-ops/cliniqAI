@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClinIQ — Clinical Decision Support, Reimagined</title>
+<title>ClinIQ AI · Clinical decision support for hospital teams</title>
+<meta name="description" content="ClinIQ is a clinical decision support platform for hospital teams. AI-generated red flags, differentials and investigation plans, augmented with your own hospital's inpatient records and deployed on your infrastructure.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Variables ──────────────────────────────────────────────────── */
+/* Reset & Variables */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -50,7 +51,7 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-/* ── Animations ─────────────────────────────────────────────────────────── */
+/* Animations */
 @keyframes fadeUp   { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
 @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
 @keyframes float    { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
@@ -72,7 +73,7 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0);
 }
 
-/* ── Nav ─────────────────────────────────────────────────────────────────── */
+/* Nav */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 0 5%;
@@ -112,7 +113,7 @@ nav.scrolled {
 .nav-links .nav-dd-panel { white-space: normal; }
 .nav-links a:hover { color: var(--text); }
 
-/* ── Nav: Products dropdown ──────────────────────────────────────────────── */
+/* Nav: Products dropdown */
 .nav-dd { position: relative; }
 .nav-dd-trigger {
   display: inline-flex; align-items: center; gap: 6px;
@@ -296,7 +297,7 @@ nav.scrolled {
 }
 .btn-nav-primary:hover { background: var(--indigo-lt); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
 
-/* ── Hero ────────────────────────────────────────────────────────────────── */
+/* Hero */
 .hero {
   min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -422,7 +423,7 @@ nav.scrolled {
 }
 .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); }
 
-/* ── Mock UI preview ─────────────────────────────────────────────────────── */
+/* Mock UI preview */
 .hero-preview {
   margin-top: 80px; width: 100%; max-width: 960px;
   animation: fadeUp 0.9s ease-out 1.1s both;
@@ -525,7 +526,7 @@ nav.scrolled {
 .preview-tag.red    { background: rgba(127,29,29,0.3); color: #f87171; border: 1px solid rgba(127,29,29,0.4); }
 .preview-tag.violet { background: rgba(49,46,129,0.3); color: #a5b4fc; border: 1px solid rgba(49,46,129,0.4); }
 
-/* ── Section scaffolding ──────────────────────────────────────────────────── */
+/* Section scaffolding */
 section { padding: 100px 5%; }
 .container { max-width: 1100px; margin: 0 auto; }
 
@@ -550,7 +551,7 @@ section { padding: 100px 5%; }
   max-width: 540px;
 }
 
-/* ── Stats Bar ───────────────────────────────────────────────────────────── */
+/* Stats Bar */
 .stats-bar {
   background: var(--bg2);
   border-top: 1px solid var(--border);
@@ -577,7 +578,7 @@ section { padding: 100px 5%; }
   font-size: 13px; color: var(--text-muted); font-weight: 500;
 }
 
-/* ── Feature Cards ───────────────────────────────────────────────────────── */
+/* Feature Cards */
 .features { background: var(--bg); }
 .features-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
@@ -617,7 +618,7 @@ section { padding: 100px 5%; }
   font-size: 14px; color: var(--text-sub); line-height: 1.7;
 }
 
-/* ── How it works ────────────────────────────────────────────────────────── */
+/* How it works */
 .how { background: var(--bg2); }
 .steps {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
@@ -645,7 +646,7 @@ section { padding: 100px 5%; }
 .step-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
 .step-desc  { font-size: 14px; color: var(--text-sub); line-height: 1.6; }
 
-/* ── Specialties grid ────────────────────────────────────────────────────── */
+/* Specialties grid */
 .specialties { background: var(--bg); }
 .spec-grid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
@@ -668,7 +669,7 @@ section { padding: 100px 5%; }
 .spec-name  { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .spec-desc  { font-size: 13px; color: var(--text-sub); line-height: 1.5; }
 
-/* ── Clinical workflow ───────────────────────────────────────────────────── */
+/* Clinical workflow */
 .workflow { background: var(--bg2); }
 .workflow-split {
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
@@ -721,7 +722,7 @@ section { padding: 100px 5%; }
   border: 1px solid rgba(16,185,129,0.3); white-space: nowrap;
 }
 
-/* ── Data Augmentation section ─────────────────────────────────────────── */
+/* Data Augmentation section */
 .data-aug { background: var(--bg); }
 .data-aug-inner {
   background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(6,182,212,0.05) 100%);
@@ -764,7 +765,7 @@ section { padding: 100px 5%; }
   background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
 }
 
-/* ── Testimonials ────────────────────────────────────────────────────────── */
+/* Testimonials */
 .testimonials { background: var(--bg2); }
 .testimonials-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -798,7 +799,7 @@ section { padding: 100px 5%; }
 .author-name  { font-size: 14px; font-weight: 600; color: var(--text); }
 .author-role  { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
 
-/* ── Tech stack ──────────────────────────────────────────────────────────── */
+/* Tech stack */
 .tech { background: var(--bg); padding: 60px 5%; }
 .tech-inner {
   max-width: 1100px; margin: 0 auto;
@@ -819,7 +820,7 @@ section { padding: 100px 5%; }
 }
 .tech-pill:hover { border-color: var(--indigo); color: var(--indigo-lt); }
 
-/* ── CTA ─────────────────────────────────────────────────────────────────── */
+/* Cta */
 .cta { background: var(--bg2); padding: 100px 5%; }
 .cta-inner {
   max-width: 700px; margin: 0 auto; text-align: center;
@@ -858,7 +859,7 @@ section { padding: 100px 5%; }
 .btn-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(99,102,241,0.55); }
 .cta-note { font-size: 13px; color: var(--text-muted); margin-top: 20px; }
 
-/* ── Footer ──────────────────────────────────────────────────────────────── */
+/* Footer */
 footer {
   background: var(--bg);
   border-top: 1px solid var(--border);
@@ -886,7 +887,7 @@ footer {
   font-size: 12px; color: var(--text-muted); line-height: 1.6;
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 1150px) {
   .nav-links { gap: 20px; }
   .nav-links a, .nav-dd-trigger { font-size: 13px; }
@@ -922,7 +923,7 @@ footer {
   .hero-trust { flex-direction: column; gap: 12px; }
 }
 
-/* ── Demo form ───────────────────────────────────────────────────────────── */
+/* Demo form */
 .demo-form {
   background: var(--bg);
   border: 1px solid var(--border2);
@@ -997,7 +998,7 @@ footer {
   .demo-form-actions .btn-cta-primary { width: 100%; justify-content: center; }
 }
 
-/* ── Data Augmentation diagram ───────────────────────────────────────────── */
+/* Data Augmentation diagram */
 .aug-header {
   display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
 }
@@ -1063,7 +1064,7 @@ footer {
 }
 .demo-error.hidden { display: none; }
 
-/* ── Contact Modal ───────────────────────────────────────────────────────── */
+/* Contact Modal */
 .contact-modal-overlay {
   position: fixed; inset: 0; z-index: 999;
   background: rgba(0,0,0,0.7);
@@ -1130,7 +1131,7 @@ footer {
 .contact-item-icon.phone-icon { background: rgba(16,185,129,0.15); }
 .contact-item-label { font-size: 11px; font-weight: 600; font-family: var(--mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
 .contact-item-value { font-size: 15px; font-weight: 500; color: var(--text); }
-/* ── SVG icon sizing (icon set inlined in <head>) ──────────────────────────── */
+/* SVG icon sizing (icon set inlined in <head>) */
 .feature-icon .ico       { font-size: 24px; }
 .icon-indigo .ico        { color: var(--indigo-lt); }
 .icon-teal   .ico        { color: var(--teal); }
@@ -1151,7 +1152,7 @@ footer {
 .phone-icon .ico         { color: var(--green); }
 .btn .ico, .btn-primary .ico { font-size: 15px; }
 
-/* ── Demo video ─────────────────────────────────────────────────────────── */
+/* Demo video */
 .demo-section .section-sub {
   max-width: 640px; margin-left: auto; margin-right: auto; text-align: center;
 }
@@ -1177,32 +1178,6 @@ footer {
 </style>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init("Mbo_qrWKfEKMSAk1U");</script>
-<!--
-  ═══════════════════════════════════════════════════════════
-  EMAILJS SETUP — 3 steps to make the form send real emails
-  ═══════════════════════════════════════════════════════════
-  1. Create a FREE account at https://www.emailjs.com
-     (Free tier: 200 emails/month)
-
-  2. In EmailJS dashboard:
-     a) Add a service (Gmail recommended) → copy your SERVICE ID
-     b) Create a new Email Template with these variables:
-          {{from_name}}     - sender's full name
-          {{from_email}}    - sender's email
-          {{organization}}  - their organization
-          {{role}}          - their role
-          {{message}}       - their message
-        Set "To Email" to: contact@cliniqai.health
-        Copy your TEMPLATE ID
-
-     c) Go to Account → copy your PUBLIC KEY
-
-  3. Replace these 3 placeholders in this file:
-     - YOUR_EMAILJS_PUBLIC_KEY   (in the emailjs.init call above)
-     - YOUR_EMAILJS_SERVICE_ID   (in the handleDemoSubmit function)
-     - YOUR_EMAILJS_TEMPLATE_ID  (in the handleDemoSubmit function)
-  ═══════════════════════════════════════════════════════════
--->
 <!-- ── Shared ClinIQ SVG icon set ───────────────────────────────────────────
      Verbatim copy of cliniq-app/static/js/icons.js. Inlined because this
      landing page ships as a single self-contained file to GitHub Pages.
@@ -1427,7 +1402,7 @@ footer {
 </head>
 <body>
 
-<!-- ── NAV ────────────────────────────────────────────────────────────────── -->
+<!-- Nav -->
 <nav id="nav">
   <div class="nav-logo">
     <svg height="52" viewBox="40 40 600 172" xmlns="http://www.w3.org/2000/svg" style="display:block;">
@@ -1476,7 +1451,7 @@ footer {
               </div>
               <p class="dd-desc">
                 Clinical decision support at the point of care. Enter a presentation and get ranked
-                differentials, suggested workups, and reasoning you can trace &mdash; refocused the moment
+                differentials, suggested workups, and reasoning you can trace &mdash; refocused as soon as
                 you finalise a diagnosis.
               </p>
               <div class="dd-tags">
@@ -1503,7 +1478,7 @@ footer {
               </div>
               <p class="dd-desc">
                 The record layer underneath. Patient charts, encounters and MRN lookup that feed ClinIQ
-                real history &mdash; and take the finished structured note straight back on admission.
+                real history, then take the finished structured note straight back on admission.
               </p>
               <div class="dd-tags">
                 <span class="dd-tag">Charts</span>
@@ -1515,7 +1490,7 @@ footer {
 
           </div>
           <div class="nav-dd-foot">
-            <span>Two products, <strong>one patient record</strong> &mdash; built to run together.</span>
+            <span>Two products, <strong>one patient record</strong>, built to run together.</span>
             <button type="button" onclick="openContactModal()">Not sure which? Talk to us &rarr;</button>
           </div>
         </div>
@@ -1533,7 +1508,7 @@ footer {
   </div>
 </nav>
 
-<!-- ── HERO ───────────────────────────────────────────────────────────────── -->
+<!-- Hero -->
 <section class="hero" id="hero">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -1546,11 +1521,11 @@ footer {
 
   <h1>
     Clinical decisions,<br>
-    <em>backed by AI.</em>
+    <em>grounded in your own data.</em>
   </h1>
 
   <p class="hero-sub">
-    ClinIQ brings evidence-based clinical decision support to your team — powered by AI augmented with your hospital's own inpatient records. Every recommendation is grounded in outcomes from your institution.
+    ClinIQ gives your team evidence-based decision support, augmented with your own hospital's inpatient records. Every recommendation is weighted by what has actually happened at your institution.
   </p>
 
   <div class="hero-actions">
@@ -1576,7 +1551,7 @@ footer {
     <div class="trust-dot"></div>
     <div class="trust-item">
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      HIPAA compliant
+      Patient data never leaves your network
     </div>
     <div class="trust-dot"></div>
     <div class="trust-item">
@@ -1593,7 +1568,7 @@ footer {
         <span class="preview-dot r"></span>
         <span class="preview-dot y"></span>
         <span class="preview-dot g"></span>
-        <span class="preview-url">cliniq.health — ClinIQ · Clinical Decision Support</span>
+        <span class="preview-url">cliniqai.health — ClinIQ · Clinical Decision Support</span>
       </div>
       <div class="preview-body">
         <!-- Left: Input panel -->
@@ -1619,11 +1594,11 @@ footer {
         <!-- Right: Result panel -->
         <div class="preview-panel">
           <div class="preview-result-summary">
-            58-year-old male presenting with acute chest pain with radiation to jaw and diaphoresis — highly suspicious for acute coronary syndrome requiring urgent evaluation.
+            58-year-old male, acute chest pain radiating to jaw with diaphoresis. Highly suspicious for acute coronary syndrome; requires urgent evaluation.
           </div>
           <div class="preview-block red">
             <div class="preview-block-title"><i class="ico" data-icon="siren"></i> Red Flags</div>
-            <div style="font-size:10px;color:#fca5a5;line-height:1.6"><i class="ico" data-icon="chevron-right"></i> STEMI equivalent presentation — time-critical<br><i class="ico" data-icon="chevron-right"></i> Haemodynamic compromise risk<br><i class="ico" data-icon="chevron-right"></i> Jaw radiation with diaphoresis</div>
+            <div style="font-size:10px;color:#fca5a5;line-height:1.6"><i class="ico" data-icon="chevron-right"></i> STEMI equivalent presentation, time-critical<br><i class="ico" data-icon="chevron-right"></i> Haemodynamic compromise risk<br><i class="ico" data-icon="chevron-right"></i> Jaw radiation with diaphoresis</div>
           </div>
           <div class="preview-block cyan">
             <div class="preview-block-title"><i class="ico" data-icon="microscope"></i> Investigations</div>
@@ -1648,42 +1623,42 @@ footer {
   </div>
 </section>
 
-<!-- ── STATS ──────────────────────────────────────────────────────────────── -->
+<!-- Stats -->
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item reveal">
       <div class="stat-num">8</div>
-      <div class="stat-label">Medical Specialties</div>
+      <div class="stat-label">Assessment specialties</div>
     </div>
     <div class="stat-item reveal" style="transition-delay:0.1s">
       <div class="stat-num">27+</div>
-      <div class="stat-label">Doctor Specialties Supported</div>
+      <div class="stat-label">Referral specialties supported</div>
     </div>
     <div class="stat-item reveal" style="transition-delay:0.2s">
       <div class="stat-num">0</div>
-      <div class="stat-label">Patient Data Sent to Cloud</div>
+      <div class="stat-label">Patient records sent to the cloud</div>
     </div>
     <div class="stat-item reveal" style="transition-delay:0.3s">
       <div class="stat-num">100%</div>
-      <div class="stat-label">Local — Your Infrastructure</div>
+      <div class="stat-label">Runs on your infrastructure</div>
     </div>
   </div>
 </div>
 
 
-<!-- ── FEATURES ───────────────────────────────────────────────────────────── -->
+<!-- Features -->
 <section class="features" id="features">
   <div class="container">
     <div class="reveal">
       <div class="section-eyebrow">Features</div>
-      <h2 class="section-title">Everything your clinical<br>team needs</h2>
-      <p class="section-sub">From AI-powered differential diagnoses to real-time doctor notifications — ClinIQ is a complete clinical workflow platform.</p>
+      <h2 class="section-title">Everything your clinical team needs</h2>
+      <p class="section-sub">Differential diagnoses, investigation planning, referral and doctor sign-off, in one clinical workflow.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card reveal" style="transition-delay:0.05s">
         <div class="feature-icon icon-indigo"><i class="ico" data-icon="sparkles"></i></div>
         <div class="feature-title">AI Clinical Assessment</div>
-        <div class="feature-desc">Submit patient data via structured form or free-text. Get back red flags, differential diagnoses, investigation plans, and evidence-based management — in seconds.</div>
+        <div class="feature-desc">Submit patient data via structured form or free-text. Red flags, differential diagnoses, investigation plans and evidence-based management come back in seconds.</div>
       </div>
       <div class="feature-card reveal" style="transition-delay:0.1s">
         <div class="feature-icon icon-teal"><i class="ico" data-icon="microscope"></i></div>
@@ -1693,33 +1668,33 @@ footer {
       <div class="feature-card reveal" style="transition-delay:0.15s">
         <div class="feature-icon icon-red"><i class="ico" data-icon="siren"></i></div>
         <div class="feature-title">Red Flag Detection</div>
-        <div class="feature-desc">Automatic identification of time-critical presentations. Red flags surface immediately at the top of every assessment — before anything else.</div>
+        <div class="feature-desc">Automatic identification of time-critical presentations. Red flags surface at the top of every assessment, ahead of everything else.</div>
       </div>
       <div class="feature-card reveal" style="transition-delay:0.2s">
         <div class="feature-icon icon-green"><i class="ico" data-icon="hospital"></i></div>
         <div class="feature-title">Admission Workflow</div>
-        <div class="feature-desc">Seamless admission requests with urgency grading (Routine / Urgent / Emergency). Cases are automatically routed to the right specialty doctor queue.</div>
+        <div class="feature-desc">Admission requests carry an urgency grade (Routine, Urgent or Emergency) and route automatically to the right specialty doctor queue.</div>
       </div>
       <div class="feature-card reveal" style="transition-delay:0.25s">
         <div class="feature-icon icon-violet"><i class="ico" data-icon="pencil"></i></div>
         <div class="feature-title">Doctor Review & Override</div>
-        <div class="feature-desc">Doctors review the full AI analysis, edit the suggested action plan inline, add clinical notes, then Admit, Reject, or Discharge — all in one modal.</div>
+        <div class="feature-desc">Doctors review the full AI analysis, edit the suggested action plan inline, add clinical notes, then Admit, Reject or Discharge without leaving the screen.</div>
       </div>
       <div class="feature-card reveal" style="transition-delay:0.3s">
         <div class="feature-icon icon-amber"><i class="ico" data-icon="bell"></i></div>
         <div class="feature-title">Real-Time Notifications</div>
-        <div class="feature-desc">Bidirectional notification system. Doctors are alerted to new referrals; clinicians are notified the moment a decision is made on their patient.</div>
+        <div class="feature-desc">Bidirectional notification system. Doctors are alerted to new referrals, and the referring clinician hears back as soon as a decision is made.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── HOW IT WORKS ───────────────────────────────────────────────────────── -->
+<!-- How it works -->
 <section class="how" id="how">
   <div class="container">
     <div style="text-align:center" class="reveal">
       <div class="section-eyebrow">How it works</div>
-      <h2 class="section-title">From bedside to decision<br>in four steps</h2>
+      <h2 class="section-title">From bedside to decision in four steps</h2>
     </div>
     <div class="steps">
       <div class="step reveal" style="transition-delay:0.05s">
@@ -1746,13 +1721,13 @@ footer {
   </div>
 </section>
 
-<!-- ── SPECIALTIES ─────────────────────────────────────────────────────────── -->
+<!-- Specialties -->
 <section class="specialties" id="specialties">
   <div class="container">
     <div class="reveal">
       <div class="section-eyebrow">Specialties</div>
-      <h2 class="section-title">Eight specialties,<br>one platform</h2>
-      <p class="section-sub">Each specialty has a tailored AI system prompt, ensuring the clinical assessment is contextualised to the right domain of medicine.</p>
+      <h2 class="section-title">Eight specialties on one platform</h2>
+      <p class="section-sub">Assessments are tuned per specialty, so the differentials and investigations reflect how that specialty actually works up a case.</p>
     </div>
     <div class="spec-grid">
       <div class="spec-card reveal" style="transition-delay:0.05s">
@@ -1799,13 +1774,13 @@ footer {
   </div>
 </section>
 
-<!-- ── WORKFLOW ────────────────────────────────────────────────────────────── -->
+<!-- Workflow -->
 <section class="workflow" id="workflow">
   <div class="container">
     <div class="workflow-split">
       <div class="reveal">
         <div class="section-eyebrow">Admission Workflow</div>
-        <h2 class="section-title">A complete referral<br>system, built in</h2>
+        <h2 class="section-title">A complete referral system, built in</h2>
         <ul class="workflow-list">
           <li class="workflow-item">
             <div class="workflow-num">1</div>
@@ -1825,21 +1800,21 @@ footer {
             <div class="workflow-num">3</div>
             <div>
               <div class="workflow-item-title">Full case context preserved</div>
-              <div class="workflow-item-desc">The reviewing doctor sees everything: the original patient data, the complete AI analysis, and all clinician notes — in a single review modal.</div>
+              <div class="workflow-item-desc">The reviewing doctor sees everything: the original patient data, the full AI analysis and every clinician note, in a single review screen.</div>
             </div>
           </li>
           <li class="workflow-item">
             <div class="workflow-num">4</div>
             <div>
-              <div class="workflow-item-title">Closed-loop notifications</div>
-              <div class="workflow-item-desc">Decisions close the loop. The referring clinician receives an instant notification when their patient is admitted, rejected, or discharged.</div>
+              <div class="workflow-item-title">The referrer always hears back</div>
+              <div class="workflow-item-desc">The referring clinician is notified the moment a decision is made, whether the patient is admitted, rejected or discharged.</div>
             </div>
           </li>
         </ul>
       </div>
       <div class="reveal" style="transition-delay:0.2s">
         <div class="flow-diagram">
-          <div class="flow-header">Live case status</div>
+          <div class="flow-header">Case status · illustrative example</div>
           <div class="flow-node">
             <div class="flow-node-icon"><i class="ico" data-icon="stethoscope"></i></div>
             <div class="flow-node-text">
@@ -1852,7 +1827,7 @@ footer {
           <div class="flow-node active">
             <div class="flow-node-icon"><i class="ico" data-icon="user-check"></i></div>
             <div class="flow-node-text">
-              <strong>Dr. Smith — Cardiology</strong>
+              <strong>Dr Patel · Cardiology</strong>
               Reviewing case · Action plan being edited
             </div>
             <span class="flow-badge" style="background:rgba(99,102,241,0.15);color:#818cf8;border-color:rgba(99,102,241,0.3)">Reviewing</span>
@@ -1870,8 +1845,8 @@ footer {
           <div class="flow-node">
             <div class="flow-node-icon"><i class="ico" data-icon="bell"></i></div>
             <div class="flow-node-text">
-              <strong>Nurse A notified</strong>
-              "John Doe admitted by Dr. Smith — Cardiology"
+              <strong>Referring nurse notified</strong>
+              "MRN 4471882 admitted by Dr Patel · Cardiology"
             </div>
             <span class="flow-badge" style="background:rgba(6,182,212,0.15);color:#67e8f9;border-color:rgba(6,182,212,0.3)">Delivered</span>
           </div>
@@ -1881,7 +1856,7 @@ footer {
   </div>
 </section>
 
-<!-- ── DATA AUGMENTATION ─────────────────────────────────────────────────── -->
+<!-- Data augmentation -->
 <section class="data-aug" id="data-augmentation">
   <div class="container">
     <div class="data-aug-inner reveal">
@@ -1889,7 +1864,7 @@ footer {
         <div class="data-aug-badge" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.25);color:var(--teal)"><i class="ico" data-icon="bar-chart"></i> Real Patient Data</div>
         <h2 class="section-title" style="font-size:clamp(1.8rem,3vw,2.6rem)">Clinical assessment grounded<br>in <em style="font-style:italic">your</em> hospital's history</h2>
         <p style="font-size:15px;color:var(--text-sub);line-height:1.7;margin-top:12px">
-          ClinIQ augments the AI-generated assessment with your hospital's own inpatient records — so every recommendation reflects the outcomes, protocols, and case patterns specific to your institution.
+          ClinIQ augments the AI-generated assessment with your hospital's own inpatient records, so every recommendation reflects the outcomes, protocols and case patterns specific to your institution.
         </p>
         <ul class="data-aug-points">
           <li class="data-aug-point">
@@ -1903,21 +1878,21 @@ footer {
             <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)"><i class="ico" data-icon="check"></i></div>
             <div class="data-aug-point-text">
               <strong>Institution-specific context</strong>
-              Recommendations are weighted against what has actually worked at your hospital — not just generalised medical literature.
+              Recommendations are weighted against what has actually worked at your hospital, not only against the general literature.
             </div>
           </li>
           <li class="data-aug-point">
             <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)"><i class="ico" data-icon="check"></i></div>
             <div class="data-aug-point-text">
-              <strong>Continuous learning loop</strong>
-              As new cases are admitted and closed, the augmentation layer updates — keeping the clinical assessment aligned with your evolving patient population.
+              <strong>Kept current with your case mix</strong>
+              As new cases are admitted and closed, they are re-indexed into the retrieval set, so the cases ClinIQ cites stay representative of your current patient population.
             </div>
           </li>
           <li class="data-aug-point">
             <div class="data-aug-check" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)"><i class="ico" data-icon="check"></i></div>
             <div class="data-aug-point-text">
               <strong>Similarity-matched retrieval</strong>
-              When a new patient is assessed, ClinIQ surfaces the most clinically similar historical cases — giving clinicians direct precedent from within their own walls.
+              When a new patient is assessed, ClinIQ surfaces the most clinically similar historical cases, giving clinicians precedent from their own hospital.
             </div>
           </li>
         </ul>
@@ -1929,7 +1904,7 @@ footer {
             <span class="aug-icon"><i class="ico" data-icon="database"></i></span>
             <div>
               <div class="aug-title">How augmentation works</div>
-              <div class="aug-sub">Live example — Cardiology presentation</div>
+              <div class="aug-sub">Illustrative example · Cardiology presentation</div>
             </div>
           </div>
 
@@ -1991,57 +1966,14 @@ footer {
   </div>
 </section>
 
-<!-- ── TESTIMONIALS ────────────────────────────────────────────────────────── -->
-<!-- <section class="testimonials" id="testimonials">
-  <div class="container">
-    <div style="text-align:center" class="reveal">
-      <div class="section-eyebrow">Testimonials</div>
-      <h2 class="section-title">Trusted by clinicians</h2>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial reveal" style="transition-delay:0.05s">
-        <div class="testimonial-quote">The red flag detection alone has changed how we triage in A&E. It surfaces what matters immediately, without wading through paragraphs of text.</div>
-        <div class="testimonial-author">
-          <div class="author-avatar">SR</div>
-          <div>
-            <div class="author-name">Dr. Sarah Rahman</div>
-            <div class="author-role">Emergency Medicine Consultant</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial reveal" style="transition-delay:0.15s">
-        <div class="testimonial-quote">I was sceptical about AI in clinical settings until I saw it run completely locally. No data leaving the network means I can actually recommend this to my team.</div>
-        <div class="testimonial-author">
-          <div class="author-avatar">JC</div>
-          <div>
-            <div class="author-name">James Chen</div>
-            <div class="author-role">Clinical Informatics Lead</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial reveal" style="transition-delay:0.25s">
-        <div class="testimonial-quote">The admission workflow has cut our referral back-and-forth in half. Doctors get full context, and I get notified the second a decision is made.</div>
-        <div class="testimonial-author">
-          <div class="author-avatar">AM</div>
-          <div>
-            <div class="author-name">Amara Mensah</div>
-            <div class="author-role">Advanced Nurse Practitioner</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
-
-<!-- ── DEMO VIDEO ─────────────────────────────────────────────────────────── -->
+<!-- Demo video -->
 <section class="demo-section" id="demo">
   <div class="container">
     <div class="reveal" style="text-align:center">
       <div class="section-eyebrow">Product demo</div>
       <h2 class="section-title">One case,<br>start to finish</h2>
-      <p class="section-sub">A complete walkthrough &mdash; from an MRN lookup at the bedside to a structured assessment,
-        collaborative review, a finalised diagnosis, and an inter-facility transfer with SBAR and EMTALA documentation.</p>
+      <p class="section-sub">A complete walkthrough, from an MRN lookup at the bedside to a structured assessment,
+        collaborative review, a finalised diagnosis, and an inter-hospital transfer with SBAR handover documentation.</p>
     </div>
 
     <div class="demo-frame reveal">
@@ -2063,28 +1995,28 @@ footer {
     </div>
     <p class="demo-note reveal">
       All ClinIQ AI output is decision support only and does not constitute medical advice.
-      Clinical judgment of the treating clinician takes precedence at all times.
+      Clinical judgement of the treating clinician takes precedence at all times.
     </p>
   </div>
 </section>
 
-<!-- ── CTA ────────────────────────────────────────────────────────────────── -->
+<!-- CTA -->
 <section class="cta" id="cta">
   <div class="cta-inner reveal">
     <div class="cta-glow"></div>
     <div class="section-eyebrow" style="justify-content:center">Get in Touch</div>
     <h2>See ClinIQ AI<br><em style="font-style:italic;background:linear-gradient(135deg,var(--indigo-lt),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">in action</em></h2>
-    <p class="cta-sub">Book a personalised demo for your team, or contact us to discuss deployment options for your organization.</p>
+    <p class="cta-sub">Book a personalised demo for your team, or contact us to discuss deployment options for your organisation.</p>
 
     <div class="demo-form">
       <div class="demo-form-grid">
         <div class="demo-field">
           <label>First name</label>
-          <input type="text" id="demo-firstname" placeholder="Dr. Jane">
+          <input type="text" id="demo-firstname" placeholder="Jane">
         </div>
         <div class="demo-field">
           <label>Last name</label>
-          <input type="text" id="demo-lastname" placeholder="Smith">
+          <input type="text" id="demo-lastname" placeholder="Ellis">
         </div>
       </div>
       <div class="demo-field">
@@ -2093,7 +2025,7 @@ footer {
       </div>
       <div class="demo-form-grid">
         <div class="demo-field">
-          <label>Organization</label>
+          <label>Organisation</label>
           <input type="text" id="demo-org" placeholder="NHS Trust / Hospital / Clinic">
         </div>
         <div class="demo-field">
@@ -2124,15 +2056,15 @@ footer {
       </div>
       <div id="form-success" class="demo-success hidden">
         <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Thanks! We'll be in touch within one business day.
+        Thanks, we'll be in touch within one working day.
       </div>
       <div id="form-error" class="demo-error hidden"></div>
     </div>
-    <p class="cta-note">No commitment · For qualified clinical teams only · Responses within 1 business day</p>
+    <p class="cta-note">No commitment · For qualified clinical teams only · Responses within 1 working day</p>
   </div>
 </section>
 
-<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<!-- Footer -->
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">
@@ -2163,20 +2095,20 @@ footer {
       <a href="#demo">Demo</a>
       <a href="#cta">Book Demo</a>
     </div>
-    <div class="footer-note">© 2025 ClinIQ AI · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7bfb2bbbbb897b4bbbeb9bea6f9bfb2b6bba3bf">[email&#160;protected]</a></div>
+    <div class="footer-note">© 2026 ClinIQ AI · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7bfb2bbbbb897b4bbbeb9bea6f9bfb2b6bba3bf">[email&#160;protected]</a></div>
   </div>
   <div class="footer-disclaimer">
     <strong style="color:var(--text-muted)">Medical Disclaimer:</strong> ClinIQ AI is a clinical decision support tool intended for use by qualified healthcare professionals only. All AI-generated outputs are for decision support purposes and do not replace clinical judgement. The treating clinician retains full responsibility for all clinical decisions. Not for direct patient use.
   </div>
 </footer>
 
-<!-- ── CONTACT MODAL ──────────────────────────────────────────────────────── -->
+<!-- Contact modal -->
 <div class="contact-modal-overlay" id="contactModal" onclick="if(event.target===this)closeContactModal()">
   <div class="contact-modal">
     <button class="contact-modal-close" onclick="closeContactModal()"><i class="ico" data-icon="x"></i></button>
     <div class="contact-modal-icon"><i class="ico" data-icon="message-square"></i></div>
     <h3>Get in Touch</h3>
-    <p class="contact-modal-sub">Reach out to us directly — we typically respond within one business day.</p>
+    <p class="contact-modal-sub">Reach out to us directly. We typically respond within one working day.</p>
     <a class="contact-item" href="mailto:contact@cliniqai.health">
       <div class="contact-item-icon email-icon"><i class="ico" data-icon="mail"></i></div>
       <div>
@@ -2195,13 +2127,13 @@ footer {
 </div>
 
 <script>
-// ── Sticky nav ───────────────────────────────────────────────────────────────
+// Sticky nav
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 });
 
-// ── Contact Modal ─────────────────────────────────────────────────────────────
+// Contact Modal
 function openContactModal() {
   document.getElementById('contactModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2232,7 +2164,7 @@ setTimeout(() => {
   revealEls.forEach(el => el.classList.add('visible'));
 }, 1500);
 
-// ── Demo form submission via EmailJS ─────────────────────────────────────────
+// Demo form submission via EmailJS
 function handleDemoSubmit(btn) {
   const form      = btn.closest('.demo-form');
   const inputs    = form.querySelectorAll('input, select, textarea');
@@ -2280,7 +2212,7 @@ function handleDemoSubmit(btn) {
     });
 }
 
-// ── Counter animation ─────────────────────────────────────────────────────────
+// Counter animation
 function animateCounter(el, target, suffix = '', duration = 1600) {
   const isZero = target === 0;
   if (isZero) return;
@@ -2315,7 +2247,7 @@ const statsObserver = new IntersectionObserver((entries) => {
 const statsBar = document.querySelector('.stats-bar');
 if (statsBar) statsObserver.observe(statsBar);
 
-// ── Products dropdown (hover is CSS; this covers click, touch & keyboard) ─────
+// Products dropdown (hover is CSS; this covers click, touch & keyboard)
 (function () {
   const dd = document.getElementById('products-dd');
   if (!dd) return;
