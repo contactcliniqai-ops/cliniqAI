@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-US">
 <head>
 <meta charset="UTF-8">
 <script>
@@ -54,7 +54,7 @@
 
 /* ── Light theme ───────────────────────────────────────────────────────────
    Toggled by data-theme="light" on <html> (see theme-toggle script near the
-   end of <body>). Every rule above reads colour through these custom
+   end of <body>). Every rule above reads color through these custom
    properties, so the overrides below are the whole light palette.
    .hero-preview is a screenshot of the (always-dark) app UI and re-locks its
    own copy of these variables further down, so it stays dark in both themes. */
@@ -1344,7 +1344,7 @@ footer {
  *
  * One canonical, stroke-based icon set shared byte-for-byte between cliniq-app
  * and ehr-cliniq. No emoji anywhere in the UI: emoji render differently on every
- * OS, can't inherit colour, and look consumer-grade in a clinical product.
+ * OS, can't inherit color, and look consumer-grade in a clinical product.
  *
  * Usage
  *   markup : <i class="ico" data-icon="stethoscope"></i>
@@ -1355,7 +1355,7 @@ footer {
  * by a MutationObserver — so markup injected by any render function just works.
  *
  * Geometry: 24×24 viewBox, fill:none, stroke:currentColor, round caps/joins.
- * Icons inherit colour (currentColor) and size (1em) from their container.
+ * Icons inherit color (currentColor) and size (1em) from their container.
  * ───────────────────────────────────────────────────────────────────────────── */
 (function (global) {
   'use strict';
@@ -1554,6 +1554,80 @@ footer {
   global.hydrateIcons = hydrateIcons;
 })(window);
 </script>
+
+<!-- ─── Analytics & Google Ads conversion tracking ───────────────────────────
+     Paste your own IDs into CFG below once; every event is already wired.
+       GA4_ID   — GA4 measurement ID      (GA4 → Admin → Data streams)
+       ADS_ID   — Google Ads conversion ID (Ads → Goals → Conversions → tag setup)
+       LABEL_*  — per-conversion-action labels from that same screen
+     While an ID is left as a placeholder nothing loads and nothing is sent —
+     events log to the console instead, so this is safe to deploy today and
+     safe to test before the Ads account exists. -->
+<script>
+(function (w) {
+  var CFG = {
+    GA4_ID:        'G-XXXXXXXXXX',
+    ADS_ID:        'AW-XXXXXXXXXX',
+    LABEL_DEMO:    'xxxxxxxxxxxxxxxxxx',  // conversion action "Demo request"   — Primary
+    LABEL_PRICING: 'xxxxxxxxxxxxxxxxxx',  // conversion action "Pricing / quote" — Primary
+    LABEL_APP:     'xxxxxxxxxxxxxxxxxx'   // conversion action "App / EHR open"  — Secondary
+  };
+  var set  = function (v) { return v.indexOf('X') === -1 && v.indexOf('x') === -1; };
+  var live = set(CFG.GA4_ID) || set(CFG.ADS_ID);
+
+  w.dataLayer = w.dataLayer || [];
+  function gtag() { w.dataLayer.push(arguments); }
+  w.gtag = gtag;
+
+  if (live) {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + (set(CFG.GA4_ID) ? CFG.GA4_ID : CFG.ADS_ID);
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    if (set(CFG.GA4_ID)) gtag('config', CFG.GA4_ID);
+    // Ads needs enhanced conversions off-by-default here: the forms collect a
+    // work email, so turn it on in the Ads UI only once you've confirmed the
+    // consent/privacy position for clinician contact data.
+    if (set(CFG.ADS_ID)) gtag('config', CFG.ADS_ID, { allow_enhanced_conversions: false });
+  }
+
+  /* One call per completed lead. kind = 'demo' | 'pricing' | 'app'.
+     `params` is attached to the GA4 event only — never pass an email address
+     or anything else that identifies a person. */
+  w.cliniqTrack = function (kind, params) {
+    params = params || {};
+    var label = { demo: CFG.LABEL_DEMO, pricing: CFG.LABEL_PRICING, app: CFG.LABEL_APP }[kind];
+    try {
+      var payload = { lead_type: kind };
+      for (var k in params) { if (params.hasOwnProperty(k)) payload[k] = params[k]; }
+      gtag('event', kind === 'app' ? 'app_open' : 'generate_lead', payload);
+      if (live && label && set(label)) {
+        gtag('event', 'conversion', { send_to: CFG.ADS_ID + '/' + label });
+      }
+    } catch (e) { /* tracking must never break a form submit */ }
+    if (!live) console.log('[cliniqTrack]', kind, params);
+  };
+
+  /* Funnel steps — GA4 only, no Ads conversion. Shows which wizard step is
+     losing people before they reach the contact panel. */
+  w.cliniqStep = function (name, params) {
+    try { gtag('event', name, params || {}); } catch (e) {}
+    if (!live) console.log('[cliniqStep]', name, params || {});
+  };
+
+  /* Secondary signal: someone opening the live app or EHR from the nav. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (/^https?:\/\/(app|ehr)\.cliniqai\.health/.test(h)) {
+      w.cliniqTrack('app', { destination: h.indexOf('//ehr.') > -1 ? 'ehr' : 'app' });
+    }
+  }, true);
+})(window);
+</script>
+
 </head>
 <body>
 
@@ -1607,7 +1681,7 @@ footer {
               <p class="dd-desc">
                 Clinical decision support at the point of care. Enter a presentation and get ranked
                 differentials, suggested workups, and reasoning you can trace &mdash; refocused as soon as
-                you finalise a diagnosis.
+                you finalize a diagnosis.
               </p>
               <div class="dd-tags">
                 <span class="dd-tag">Differentials</span>
@@ -1822,7 +1896,7 @@ footer {
       <div class="feature-card reveal" style="transition-delay:0.1s">
         <div class="feature-icon icon-teal"><i class="ico" data-icon="microscope"></i></div>
         <div class="feature-title">Structured Investigations</div>
-        <div class="feature-desc">AI-generated investigation panels categorised by type (bloods, imaging, microbiology) with clinical rationale for each recommendation.</div>
+        <div class="feature-desc">AI-generated investigation panels categorized by type (bloods, imaging, microbiology) with clinical rationale for each recommendation.</div>
       </div>
       <div class="feature-card reveal" style="transition-delay:0.15s">
         <div class="feature-icon icon-red"><i class="ico" data-icon="siren"></i></div>
@@ -1864,7 +1938,7 @@ footer {
       <div class="step reveal" style="transition-delay:0.15s">
         <div class="step-num">02</div>
         <div class="step-title">AI Analysis</div>
-        <div class="step-desc">The AI analyses the case against your hospital's inpatient history, generating red flags, differentials, investigations, and a contextualised evidence-based action plan.</div>
+        <div class="step-desc">The AI analyzes the case against your hospital's inpatient history, generating red flags, differentials, investigations, and a contextualized evidence-based action plan.</div>
       </div>
       <div class="step reveal" style="transition-delay:0.25s">
         <div class="step-num">03</div>
@@ -1906,8 +1980,8 @@ footer {
       </div>
       <div class="spec-card reveal" style="transition-delay:0.2s">
         <span class="spec-icon"><i class="ico" data-icon="baby"></i></span>
-        <div class="spec-name">Paediatrics</div>
-        <div class="spec-desc">Age-appropriate assessments for paediatric presentations</div>
+        <div class="spec-name">Pediatrics</div>
+        <div class="spec-desc">Age-appropriate assessments for pediatric presentations</div>
       </div>
       <div class="spec-card reveal" style="transition-delay:0.25s">
         <span class="spec-icon"><i class="ico" data-icon="lungs"></i></span>
@@ -1951,7 +2025,7 @@ footer {
           <li class="workflow-item">
             <div class="workflow-num">2</div>
             <div>
-              <div class="workflow-item-title">Urgency-based prioritisation</div>
+              <div class="workflow-item-title">Urgency-based prioritization</div>
               <div class="workflow-item-desc">Cases are graded Routine, Urgent, or Emergency. Emergency cases rise to the top of every doctor's queue and trigger immediate notification.</div>
             </div>
           </li>
@@ -2087,8 +2161,8 @@ footer {
             <div class="aug-step">
               <div class="aug-step-num" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--amber)">3</div>
               <div class="aug-step-body">
-                <div class="aug-step-title">Outcomes analysed</div>
-                <div class="aug-step-desc">78% STEMI confirmed · Avg time-to-cath 42 min at this trust</div>
+                <div class="aug-step-title">Outcomes analyzed</div>
+                <div class="aug-step-desc">78% STEMI confirmed · Avg time-to-cath 42 min at this hospital</div>
               </div>
             </div>
             <div class="aug-connector"></div>
@@ -2096,7 +2170,7 @@ footer {
               <div class="aug-step-num" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--green)">4</div>
               <div class="aug-step-body">
                 <div class="aug-step-title">Augmented assessment generated</div>
-                <div class="aug-step-desc">AI assessment enriched with your trust's protocols &amp; precedent</div>
+                <div class="aug-step-desc">AI assessment enriched with your hospital's protocols &amp; precedent</div>
               </div>
             </div>
           </div>
@@ -2132,7 +2206,7 @@ footer {
       <div class="section-eyebrow">Product demo</div>
       <h2 class="section-title">One case,<br>start to finish</h2>
       <p class="section-sub">A complete walkthrough, from an MRN lookup at the bedside to a structured assessment,
-        collaborative review, a finalised diagnosis, and an inter-hospital transfer with SBAR handover documentation.</p>
+        collaborative review, a finalized diagnosis, and an inter-hospital transfer with SBAR handoff documentation.</p>
     </div>
 
     <div class="demo-frame reveal">
@@ -2154,7 +2228,7 @@ footer {
     </div>
     <p class="demo-note reveal">
       All ClinIQ AI output is decision support only and does not constitute medical advice.
-      Clinical judgement of the treating clinician takes precedence at all times.
+      Clinical judgment of the treating clinician takes precedence at all times.
     </p>
   </div>
 </section>
@@ -2185,9 +2259,9 @@ footer {
         <h3 class="wizard-q">How big is your hospital?</h3>
         <div class="wizard-options">
           <button class="wizard-option" data-value="Under 100 beds">Under 100 beds<span class="wizard-option-sub">Community hospital / single site</span></button>
-          <button class="wizard-option" data-value="100–300 beds">100–300 beds<span class="wizard-option-sub">District general hospital</span></button>
+          <button class="wizard-option" data-value="100–300 beds">100–300 beds<span class="wizard-option-sub">General hospital</span></button>
           <button class="wizard-option" data-value="300–600 beds">300–600 beds<span class="wizard-option-sub">Regional / teaching hospital</span></button>
-          <button class="wizard-option" data-value="600+ beds or multi-site">600+ beds or multi-site<span class="wizard-option-sub">Health system or trust</span></button>
+          <button class="wizard-option" data-value="600+ beds or multi-site">600+ beds or multi-site<span class="wizard-option-sub">Health system</span></button>
         </div>
         <div class="wizard-actions">
           <span></span>
@@ -2236,8 +2310,8 @@ footer {
           <input type="email" id="wizard-email" placeholder="Work Email *">
         </div>
         <div class="demo-field">
-          <label>Organisation <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
-          <input type="text" id="wizard-org" placeholder="NHS Trust / Hospital / Clinic">
+          <label>Organization <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
+          <input type="text" id="wizard-org" placeholder="Hospital / Health System / Clinic">
         </div>
         <div class="wizard-actions">
           <button class="btn-ghost" onclick="wizardBack(4)"><i class="ico" data-icon="arrow-left"></i> Back</button>
@@ -2266,7 +2340,7 @@ footer {
     <div class="cta-glow"></div>
     <div class="section-eyebrow" style="justify-content:center">Get in Touch</div>
     <h2>See ClinIQ AI<br><em style="font-style:italic;background:linear-gradient(135deg,var(--indigo-lt),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent">in action</em></h2>
-    <p class="cta-sub">Book a personalised demo for your team, or contact us to discuss deployment options for your organisation.</p>
+    <p class="cta-sub">Book a personalized demo for your team, or contact us to discuss deployment options for your organization.</p>
 
     <div class="demo-form">
       <div class="demo-form-grid">
@@ -2285,14 +2359,14 @@ footer {
       </div>
       <div class="demo-form-grid">
         <div class="demo-field">
-          <label>Organisation</label>
-          <input type="text" id="demo-org" placeholder="NHS Trust / Hospital / Clinic">
+          <label>Organization</label>
+          <input type="text" id="demo-org" placeholder="Hospital / Health System / Clinic">
         </div>
         <div class="demo-field">
           <label>Role</label>
           <select id="demo-role">
             <option value="" disabled selected>Select your role</option>
-            <option>Doctor / Consultant</option>
+            <option>Doctor / Attending Physician</option>
             <option>Clinical Director</option>
             <option>Nurse Practitioner</option>
             <option>IT / Clinical Informatics</option>
@@ -2359,7 +2433,7 @@ footer {
     <div class="footer-note">© 2026 ClinIQ AI · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7bfb2bbbbb897b4bbbeb9bea6f9bfb2b6bba3bf">[email&#160;protected]</a></div>
   </div>
   <div class="footer-disclaimer">
-    <strong style="color:var(--text-muted)">Medical Disclaimer:</strong> ClinIQ AI is a clinical decision support tool intended for use by qualified healthcare professionals only. All AI-generated outputs are for decision support purposes and do not replace clinical judgement. The treating clinician retains full responsibility for all clinical decisions. Not for direct patient use.
+    <strong style="color:var(--text-muted)">Medical Disclaimer:</strong> ClinIQ AI is a clinical decision support tool intended for use by qualified healthcare professionals only. All AI-generated outputs are for decision support purposes and do not replace clinical judgment. The treating clinician retains full responsibility for all clinical decisions. Not for direct patient use.
   </div>
 </footer>
 
@@ -2479,6 +2553,7 @@ function handleDemoSubmit(btn) {
 
   emailjs.send('service_pauxwxb', 'template_inxa4us', templateParams)
     .then(() => {
+      cliniqTrack('demo', { role: role || 'not_provided', has_org: org ? 'yes' : 'no' });
       form.querySelector('#form-success').classList.remove('hidden');
       form.querySelector('.demo-form-actions').style.display = 'none';
       inputs.forEach(i => i.disabled = true);
@@ -2559,6 +2634,8 @@ if (statsBar) statsObserver.observe(statsBar);
   if (!wizard) return;
 
   function showPanel(target) {
+    // Funnel event per panel reached, so the drop-off step is visible in GA4.
+    if (target !== 'done') cliniqStep('pricing_wizard_step', { step: target });
     wizard.querySelectorAll('.wizard-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === String(target)));
     const progress = wizard.querySelector('.wizard-progress');
     if (target === 'done') { progress.style.display = 'none'; return; }
@@ -2620,13 +2697,20 @@ if (statsBar) statsObserver.observe(statsBar);
       from_name:    'Not provided',
       from_email:   email,
       organization: org || 'Not provided',
-      role:         'Pricing enquiry',
+      role:         'Pricing inquiry',
       message:      `Hospital size: ${selectedSize || 'Not specified'}\nClinicians: ${selectedClinicians || 'Not specified'}\nGoals: ${goals || 'Not specified'}`,
       reply_to:     email,
     };
 
     emailjs.send('service_pauxwxb', 'template_inxa4us', templateParams)
-      .then(() => showPanel('done'))
+      .then(() => {
+        cliniqTrack('pricing', {
+          hospital_size:    selectedSize       || 'not_specified',
+          clinician_count:  selectedClinicians || 'not_specified',
+          goal_count:       (goals ? goals.split(',').length : 0)
+        });
+        showPanel('done');
+      })
       .catch((err) => {
         console.error('EmailJS error:', err);
         btn.disabled = false;
